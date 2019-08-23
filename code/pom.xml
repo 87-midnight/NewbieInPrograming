@@ -6,6 +6,7 @@
     <modules>
         <module>singleton-sample</module>
         <module>Prototype-sample</module>
+        <module>proxy-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
