@@ -6,6 +6,19 @@
 
 七个基础数据类型：byte,short,int,float,double,char,boolean
 
+在java中，基本数据类型的字节数，最大值和最小值一览表。
+
+|数据类型|字节数|二进制位数|范围|规律|
+|:---:|:---:|:---:|:---:|:---:|
+|byte	|1	|8 	|-128～127	|-2^7～2^7-1
+|short	|2 	 |16	|-32768～32767	|-2^15～2^15-1
+|int	|4 	|32 	|-2147483648～2147483647	|-2^31～2^31-1
+|long	|8 	|64 	|-9223372036854775808 ~ 9223372036854775807	|-2^63～2^63-1
+|float	|4 	|32 	|1.4E-45~3.4028235E38|	 
+|double	|8 	|64 	|4.9E-324~1.7976931348623157E308|	 
+|char	|2 	|16 	|0～65535 	|0~2^16-1
+|boolean |1 |8 	|true或false|	true或false
+
 ###### byte
 
 1 byte = 8 bit，即一个字节有8位。byte常用于网络、文件流传输，编解码，进制转换。
@@ -49,7 +62,7 @@ int和short运算示例：
 
 - 第一种情况
     - 错误
-    ```cmd
+    ```java
     short a =1;
     a = a+1;
     System.out.print(a);
@@ -59,14 +72,14 @@ int和short运算示例：
     精度小于int的数值运算时会被自动转换为int进行计算，a+1得到的是int类型数值，无法赋值给short类型的a变量
     
     - 正确的写法
-    ```cmd
+    ```java
     short a = 1;
     a = (short)(a+1);
     System.out.print(a);
     ```
 - 第二种情况
     - 正确
-    ```cmd
+    ```java
     short b = 1;
     b += 1;
     System.out.println(b);
@@ -78,7 +91,7 @@ int和short运算示例：
 
 - 第三种情况
     - 错误例子
-    ```cmd
+    ```java
     short c = 1;
     short d = 1;
     short e = d+c;
@@ -90,16 +103,53 @@ int和short运算示例：
     
     - 正确示例
     
-    ```cmd
+    ```java
     short c = 1;
     short d = 1;
     short e = (short)(d+c);
     System.out.println(e);
     ```
-- char
-- float
-- double
-- boolean
+###### char
+
+char 在java中是2个字节。java采用unicode，2个字节（16位）来表示一个字符,包含了所有的ascii字符，本意代表述职，顾可以进行数值的运算。
+
+char使用示例
+
+基础运算和转换
+
+```java
+char a = '你';
+System.out.println(a);//输出：你
+
+char b = 65;
+System.out.println(b);//输出：A
+
+char c = (char) (a+b+100);//输出：倅
+System.out.println(c);
+```
+
+一段话拆分成单个字符
+
+```java
+char[]chars = "你好呀，好久不见".toCharArray();
+for (char d:chars){
+   System.out.println(d);
+}
+```
+###### float
+
+float
+***注：浮点型如果不加F则默认为double型***。
+
+###### double
+
+
+
+###### long
+
+***注：long型后如果不加L则默认为int型***
+
+###### boolean
 
 ##### 常见封装类型
 - Integer
