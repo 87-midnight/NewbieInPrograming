@@ -241,31 +241,3 @@ public class longAndbooleanTest {
 }
 ```
 
-##### 常见封装类型
-- Integer
-- Double
-- Byte
-- Boolean
-- String
-- StringBuilder
-- StringBuffer
-- Number
-- BigDecimal
-
-#### 基础运算符
-
-常见的基础运算符和符号、关键字，方法等代表含义
-
-1. &&
-
-2. ||
-
-3. instanceof
-
-4. |
-5. ^
-6. &
-7. &lt;,&lt;=,&gt;=,&gt;,==,equals()
-8. +=,-=,*=
-9. &lt;&lt;
-10. &gt;&gt;
