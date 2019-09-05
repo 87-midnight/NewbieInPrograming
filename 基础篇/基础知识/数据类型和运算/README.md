@@ -186,9 +186,60 @@ System.out.println(f1);
 
 ###### long
 
+long 数据类型是 64 位、有符号的以二进制补码表示的整数；
+- 最小值是 -9,223,372,036,854,775,808（-2^63）；
+- 最大值是 9,223,372,036,854,775,807（2^63 -1）；
+- 这种类型主要使用在需要比较大整数的系统上；
+- 默认值是 0L；
+- 例子： long a = 100000L，Long b = -200000L。
+- "L"理论上不分大小写，但是若写成"l"容易与数字"1"混淆，不容易分辩。所以最好大写。
+
 ***注：long型后如果不加L则默认为int型***
 
+示例：
+
+```java
+long a = 152012L;
+long b = 12L;
+
+double c = 5.23;
+double d = a + c;//double精度最高，故a+c的运算后数值类型为double
+System.out.println(d);
+
+long f = a * b;
+System.out.println(f);
+
+
+```
+
 ###### boolean
+
+boolean数据类型表示一位的信息；
+- 只有两个取值：true 和 false；
+- 这种类型只作为一种标志来记录 true/false 情况；
+- 默认值是 false；
+示例：
+
+```java
+public class longAndbooleanTest {
+
+    public static boolean a2;
+
+    public boolean a3;
+
+
+
+    public static void main(String[]args){
+
+        boolean a1 = true;
+        System.out.println(a1);
+
+        System.out.println(a2);//默认值是false，当声明为静态变量
+        longAndbooleanTest test = new longAndbooleanTest();
+        System.out.println(test.a3);//默认值是false，当声明为成员变量
+    }
+}
+```
 
 ##### 常见封装类型
 - Integer
