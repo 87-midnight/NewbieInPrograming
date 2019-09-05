@@ -19,6 +19,8 @@
 |char	|2 	|16 	|0～65535 	|0~2^16-1
 |boolean |1 |8 	|true或false|	true或false
 
+代码示例：[点我查看](../../../code/basic-arithm-data-type-sample)
+
 ###### byte
 
 1 byte = 8 bit，即一个字节有8位。byte常用于网络、文件流传输，编解码，进制转换。
@@ -138,12 +140,49 @@ for (char d:chars){
 ```
 ###### float
 
-float
+float占用4个字节。
+
+float的精度是由尾数的位数来决定的。浮点数在内存中是按科学计数法来存储的，其整数部分始终是一个隐含着的“1”，由于它是不变的，故不能对精度造成影响。
+
+float：2^23 = 8388608，一共七位，这意味着最多能有7位有效数字，但绝对能保证的为6位，也即float的精度为6~7位有效数字；
+
 ***注：浮点型如果不加F则默认为double型***。
+
+***运算的结果的数据类型，是参与运算的所有数值中最高精度的数据类型***
+
+示例：见double的示例
 
 ###### double
 
+double 占用8个字节,默认有小数点的数值是double类型
 
+
+double的精度是由尾数的位数来决定的。浮点数在内存中是按科学计数法来存储的，其整数部分始终是一个隐含着的“1”，由于它是不变的，故不能对精度造成影响。
+
+double：2^52 = 4503599627370496，一共16位，同理，double的精度为15~16位。
+
+示例：
+
+```java
+float a = 3.14f;
+float a1 = 1.222f;
+float a2 = a + a1;
+System.out.println(a2);
+
+double b = 3.2245;
+double c = a + b; //运算的结果的数据类型，是参与运算的所有数值中最高精度的数据类型
+System.out.println(c);
+
+float d = (float) (a + b);//本来运算后的数值类型是double，故需要强制转换为float类型
+ystem.out.println(d);
+
+int e = 1;
+float f = (e + a)/2;//运算的结果的数据类型，是参与运算的所有数值中最高精度的数据类型
+System.out.println(f);
+        
+double f1 = e + b*2;//运算的结果的数据类型，是参与运算的所有数值中最高精度的数据类型
+System.out.println(f1);
+```
 
 ###### long
 
