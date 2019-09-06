@@ -10,6 +10,7 @@
         <module>adapter-sample</module>
         <module>strategy-sample</module>
         <module>basic-arithm-data-type-sample</module>
+        <module>operate-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
