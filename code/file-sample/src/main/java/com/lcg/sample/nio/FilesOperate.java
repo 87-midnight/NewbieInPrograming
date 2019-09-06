@@ -1,35 +1,30 @@
-### 文件操作示例
+package com.lcg.sample.nio;
 
-示例：[点我查看](../../code/file-sample)
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 
-#### 传统IO操作
+/**
+ * @author linchuangang
+ * @create 2019-09-06 22:02
+ **/
+public class FilesOperate {
 
-位于io包下
 
-##### 文件的创建、删除
-
-##### 文件的读写
-
-##### 文件的查找
-
-#### NIO操作
-
-位于nio包下
-##### 文件的创建、删除
-
-```java
-public void createFile(String fullPathFileName) throws IOException {
+    public void createFile(String fullPathFileName) throws IOException {
         Files.createFile(Paths.get(fullPathFileName));
     }
 
     public void deleteFile(String fullPathFileName)throws Exception{
         Files.deleteIfExists(Paths.get(fullPathFileName));
     }
-```
-##### 文件的读写
 
-```java
-public void readAndWrite(String fullPathFileName)throws Exception{
+    public void readAndWrite(String fullPathFileName)throws Exception{
         //读文件
         BufferedReader reader = Files.newBufferedReader(Paths.get(fullPathFileName), StandardCharsets.UTF_8);
         //写文件
@@ -44,11 +39,8 @@ public void readAndWrite(String fullPathFileName)throws Exception{
         writer.flush();
         writer.close();
     }
-```
-##### 文件夹的遍历
 
-```java
-public File find(String path,String targetName)throws Exception{
+    public File find(String path,String targetName)throws Exception{
         FilesVisitor filesVisitor = new FilesVisitor();
         Files.walkFileTree(Paths.get(path),filesVisitor);
         return filesVisitor.getTargetFile().toFile();
@@ -94,4 +86,4 @@ public File find(String path,String targetName)throws Exception{
             this.targetFile = targetFile;
         }
     }
-```
+}

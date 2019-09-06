@@ -13,6 +13,7 @@
         <module>operate-sample</module>
         <module>clone-serializable-sample</module>
         <module>oo-sample</module>
+        <module>file-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
