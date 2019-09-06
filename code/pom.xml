@@ -11,6 +11,7 @@
         <module>strategy-sample</module>
         <module>basic-arithm-data-type-sample</module>
         <module>operate-sample</module>
+        <module>clone-serializable-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
