@@ -16,6 +16,7 @@
         <module>file-sample</module>
         <module>spring-boot-jpa-sample</module>
         <module>spring-hibernate-sample</module>
+        <module>spring-boot-mybatis-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
