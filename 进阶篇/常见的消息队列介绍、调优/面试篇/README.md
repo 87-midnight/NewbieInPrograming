@@ -22,3 +22,11 @@ https://juejin.im/post/5d231b9d5188251b201d619a
 
 
 ### [消息队列的面试题](summary-interview.md)
+
+kafka
+
+https://www.cnblogs.com/starcrm/p/10552183.html
+
+rabbitmq
+
+https://www.cnblogs.com/woadmin/p/10537174.html

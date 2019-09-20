@@ -1,12 +1,9 @@
 
 
 
+
 ### 面试
 
-kafka
+redis
+https://blog.csdn.net/Butterfly_resting/article/details/89668661
 
-https://www.cnblogs.com/starcrm/p/10552183.html
-
-rabbitmq
-
-https://www.cnblogs.com/woadmin/p/10537174.html
