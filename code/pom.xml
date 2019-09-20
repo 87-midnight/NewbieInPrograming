@@ -18,6 +18,7 @@
         <module>spring-hibernate-sample</module>
         <module>spring-boot-mybatis-sample</module>
         <module>multi-thread-sample</module>
+        <module>dubbo-zookeeper-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
