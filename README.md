@@ -3,7 +3,7 @@ java basic &amp; advanced  grammar with code and description，summarize  lots o
 
 ## 传送门
 
-@[TOC]
+[TOC]
 
 ### [基础篇大纲](基础篇/README.md)
 - [设计模式](基础篇/设计模式/README.md)
