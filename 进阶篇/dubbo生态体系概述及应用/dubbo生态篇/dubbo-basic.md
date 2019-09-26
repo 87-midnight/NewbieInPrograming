@@ -144,12 +144,14 @@ register|	register|	boolean|	可选|	true|	服务治理	该协议的服务是否
 </details>
 
 ### dubbo注解详细说明
+
 > 随着微服务架构的广泛地推广和实施。在 Java 生态系统中，以 Spring Boot 和 Spring Cloud 为代表的微服务框架，引入了全新的编程模型，包括：
 >- 注解驱动（Annotation-Driven）
 >- 外部化配置（External Configuration）
 >- 以及自动装配（Auto-Configure）
 
-####@EnableDubbo
+#### @EnableDubbo
+
 
 >@EnableDubbo 注解是 @EnableDubboConfig 和 @DubboComponentScan两者组合的便捷表达方式。与注解驱动相关的是 @DubboComponentScan
 
@@ -159,7 +161,7 @@ register|	register|	boolean|	可选|	true|	服务治理	该协议的服务是否
 
 **注：如果不使用外部化配置（External Configuration）的话，也可以直接使用 @DubboComponentScan。**
 
-####@Service
+#### @Service
 
 >用来配置 Dubbo 的服务提供方
 
@@ -183,7 +185,8 @@ register|	register|	boolean|	可选|	true|	服务治理	该协议的服务是否
 >***注：application、module、provider、protocol、monitor、registry（从 8 到 13）需要提供的是对应的 spring bean 
 的名字，而这些 bean 的组装要么通过传统的 XML 配置方式完成，要么通过现代的 Java Config 来完成***
 
-####@Reference
+#### @Reference
+
 
 >配置 Dubbo 的服务消费方
 
@@ -205,4 +208,5 @@ register|	register|	boolean|	可选|	true|	服务治理	该协议的服务是否
 
 ***application、module、consumer、protocol、monitor、registry（从 7 到 12）需要提供的是对应的 spring bean 的名字，
 而这些 bean 的组装要么通过传统的 XML 配置方式完成，要么通过现代的 Java Config 来完成***
+
 ### dubbo常见类的描述和使用
