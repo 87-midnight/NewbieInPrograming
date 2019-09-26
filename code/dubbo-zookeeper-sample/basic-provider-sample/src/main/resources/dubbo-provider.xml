@@ -4,8 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
     <dubbo:application name="demo-provider"/>
-    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+    <dubbo:registry group="test" address="zookeeper://127.0.0.1:2181"/>
     <dubbo:protocol name="dubbo" port="20890"/>
-    <bean id="demoService" class="org.apache.dubbo.samples.basic.impl.DemoServiceImpl"/>
-    <dubbo:service interface="org.apache.dubbo.samples.basic.api.DemoService" ref="demoService"/>
+    <bean id="echoService" class="com.lcg.sample.service.xml.EchoServiceImpl"/>
+    <dubbo:service interface="com.lcg.sample.service.EchoService" ref="echoService"/>
 </beans>
