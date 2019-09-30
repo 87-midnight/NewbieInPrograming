@@ -20,6 +20,7 @@
         <module>multi-thread-sample</module>
         <module>dubbo-zookeeper-sample</module>
         <module>dubbo-generic-sample</module>
+        <module>dubbo-web-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
