@@ -102,3 +102,18 @@ public interface CommonService {
 
 ### dubbo 泛化引用、实现缓存
 
+#### dubbo泛化引用缓存方案
+
+>缘由：ReferenceConfig笨重，每次都实例化会造成不必要的开销，甚至影响性能
+
+**缓存方案：**
+
+>- 使用官方的ReferenceConfigCache工具类
+
+#### dubbo泛化实现缓存方案
+
+>缘由：ServiceConfig笨重，每次都实例化会造成不必要的开销，甚至影响性能
+
+**缓存方案：**
+
+>- 自定义工具类，使用concurrentMap存储
