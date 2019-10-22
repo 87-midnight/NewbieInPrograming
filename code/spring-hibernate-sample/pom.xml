@@ -12,7 +12,7 @@
     <artifactId>spring-hibernate-sample</artifactId>
 
     <properties>
-        <spring.version>4.3.14.RELEASE</spring.version>
+        <spring.version>5.2.0.RELEASE</spring.version>
         <hibernate.version>5.4.4.Final</hibernate.version>
         <jackson.version>2.9.9</jackson.version>
         <fastjson.version>1.2.58</fastjson.version>
