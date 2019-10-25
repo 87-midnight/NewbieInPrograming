@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.midnight</groupId>
+            <artifactId>code-generator-spring-boot-starter</artifactId>
+            <version>1.0.0.RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>

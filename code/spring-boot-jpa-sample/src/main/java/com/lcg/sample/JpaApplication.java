@@ -5,6 +5,7 @@ import com.lcg.sample.entity.Article;
 import com.lcg.sample.service.ArticleService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.midnight.generator.CodeGenerator;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.WebApplicationType;
@@ -21,11 +22,14 @@ import java.util.List;
 public class JpaApplication implements ApplicationRunner {
 
     private final ArticleService articleService;
+    private final CodeGenerator codeGenerator;
     public static void main(String...args){
         new SpringApplicationBuilder(JpaApplication.class).web(WebApplicationType.NONE).run(args);
     }
 
     public void run(ApplicationArguments args) throws Exception {
+        //view more info about code-generator-spring-boot-starter on github
+        codeGenerator.print();
         Article article = Article.builder().build();
         article.setContent("hello");
         article.setTitle("1234");
