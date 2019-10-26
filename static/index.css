@@ -10,8 +10,7 @@ html,body{
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    left:7.5rem;
-    bottom:3rem;
+    margin-left:7.5rem;
     width: inherit;
     height: inherit;
     overflow: auto;
@@ -30,6 +29,8 @@ html,body{
     flex-wrap: nowrap;
     height:inherit;
     width:inherit;
+    overflow: auto;
+    margin-bottom:3rem;
 }
 .header{
     top:0;
@@ -37,7 +38,7 @@ html,body{
     height:5rem;
 }
 .content{
-    background: antiquewhite;
+    background: white;
 }
 .footer{
     bottom:0;
@@ -50,4 +51,27 @@ html,body{
     transform: translate(-50% , -50%);
     left: 50%;
     top:50%;
+}
+.menu{
+    width: inherit;
+    height: inherit;
+}
+.menu-list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+.menu-list >li{
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+}
+.menu-list>li:hover{
+    background: rgba(255,255,222,.5);
 }
