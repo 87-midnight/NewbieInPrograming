@@ -80,3 +80,9 @@ html,body{
 .menu-list .active{
     color: rgb(255, 208, 75);
 }
+.menu .hide{
+    visibility: hidden;
+}
+.menu .show{
+    visibility: visible;
+}
