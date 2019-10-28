@@ -75,7 +75,7 @@ html,body{
     margin: 0;
 }
 .menu-list>li:hover{
-    background: rgb(67,74,80);
+    background: rgb(64, 158, 255);
 }
 .menu-list .active{
     color: rgb(255, 208, 75);

@@ -1,7 +1,16 @@
 hljs.initHighlightingOnLoad();
 
-var localstorage;
-
+var store = {
+    save:function (key,value) {
+        localStorage.setItem(key,value);
+    },
+    delete:function (key) {
+        localStorage.removeItem(key)
+    },
+    get:function (key) {
+        return localStorage.getItem(key);
+    }
+};
 //递归树遍历菜单
 var menuTree = function(tree){
     var str = "<ul class='menu-list'>%s</ul>";
