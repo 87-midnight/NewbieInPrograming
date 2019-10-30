@@ -81,8 +81,8 @@ html,body{
     color: rgb(255, 208, 75);
 }
 .menu .hide{
-    visibility: hidden;
+    display: none;
 }
 .menu .show{
-    visibility: visible;
+    display: block;
 }

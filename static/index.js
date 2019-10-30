@@ -12,27 +12,33 @@ var store = {
     }
 };
 //递归树遍历菜单
-var menuTree = function(tree,level){
-    var str = "<ul class='menu-list %c'>%s</ul>";
+var menuTree = function(tree,parent){
+    var str;
+    if(parent !== undefined && parent.level ===1){
+        str = "<ul class=\"menu-list show\" onclick='toggle(event)'>%s</ul>";
+    }else {
+        str = "<ul class=\"menu-list hide\" onclick='toggle(event)'>%s</ul>";
+    }
     var list = "";
     for(var item in tree){
         var li = "<li>";
         if(tree[item].children.length>0){
-            level = tree[item].level;
-            li += menuTree(tree[item].children,level);
+            li += menuTree(tree[item].children,tree[item]);
         }
         li += "<span>"+tree[item].name+"</span></li>";
         list = list + li;
     }
-    if(level !== undefined && level === 1){
-        str.replace(/%c/g,".hide");
-    }
+
     str = str.replace(/%s/g,list);
     return str;
 };
 
-document.getElementById("menu").innerHTML = menuTree(files);
-document.getElementById("menu").querySelectorAll("li");
+document.getElementById("menu").innerHTML = menuTree(files,{"level":1});
+
+var toggle = function (e) {
+    console.log(e);
+};
+
 var rendererMD = new marked.Renderer();
 marked.setOptions({
     renderer: rendererMD,
