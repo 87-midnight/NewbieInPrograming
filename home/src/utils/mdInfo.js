@@ -1,4 +1,4 @@
-var files=[
+const json=[
     {
         "name":"云游DevOps篇",
         "id":1,
@@ -216,3 +216,5 @@ var files=[
         ]
     }
 ];
+
+export default json;
