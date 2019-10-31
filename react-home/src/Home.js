@@ -1,14 +1,22 @@
 
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import Contents from "./Content";
 import React from 'react';
+import {
+    BrowserRouter as Router,
+    Route,
+    Link
+}from 'react-router-dom';
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
-
 class SiderHome extends React.Component {
     state = {
         collapsed: false,
     };
-
+    query = {
+        pathname:"/content",
+        state:{path:"I'm a parameter."}
+    };
     onCollapse = collapsed => {
         console.log(collapsed);
         this.setState({ collapsed });
@@ -16,13 +24,14 @@ class SiderHome extends React.Component {
 
     render() {
         return (
+            <Router>
             <Layout style={{ minHeight: '100vh' }}>
                 <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
                     <div className="logo" />
                     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                         <Menu.Item key="1">
                             <Icon type="pie-chart" />
-                            <span>Option 1</span>
+                            <span><Link to={this.query}>Option 1</Link></span>
                         </Menu.Item>
                         <Menu.Item key="2">
                             <Icon type="desktop" />
@@ -66,11 +75,12 @@ class SiderHome extends React.Component {
                             <Breadcrumb.Item>User</Breadcrumb.Item>
                             <Breadcrumb.Item>Bill</Breadcrumb.Item>
                         </Breadcrumb>
-                        <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>Bill is a cat.</div>
+                        <div style={{ padding: 24, background: '#fff', minHeight: 360 }}><Route path="/content" component={Contents}></Route></div>
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
                 </Layout>
             </Layout>
+            </Router>
         );
     }
 }
