@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "antd": "^3.24.3",
+    "highlight.js": "^9.15.10",
+    "marked": "^0.7.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",

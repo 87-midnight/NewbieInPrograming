@@ -15,11 +15,16 @@ class SiderHome extends React.Component {
     };
     query = {
         pathname:"/content",
-        state:{path:"I'm a parameter."}
+        state:{path:"/public/robots.txt"},
+
     };
     onCollapse = collapsed => {
         console.log(collapsed);
         this.setState({ collapsed });
+    };
+    onClick = event => {
+        this.query.state = {path:"https://github.com/87-midnight/NewbieInJava/基础篇/基础知识/Object基类概述/README.md"};
+        console.log(event);
     };
 
     render() {
@@ -29,7 +34,7 @@ class SiderHome extends React.Component {
                 <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
                     <div className="logo" />
                     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                        <Menu.Item key="1">
+                        <Menu.Item key="1" onClick = {(e)=>this.onClick(e)}>
                             <Icon type="pie-chart" />
                             <span><Link to={this.query}>Option 1</Link></span>
                         </Menu.Item>
