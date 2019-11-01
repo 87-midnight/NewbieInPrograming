@@ -15,7 +15,7 @@ class SiderHome extends React.Component {
     };
     query = {
         pathname:"/content",
-        state:{path:"../../基础篇/README.md"},
+        state:{path:"/NewbieInJava/基础篇/README.md"},
 
     };
     onCollapse = collapsed => {
