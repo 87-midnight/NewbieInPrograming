@@ -15,7 +15,7 @@ class SiderHome extends React.Component {
     };
     query = {
         pathname:"/content",
-        state:{path:"/public/robots.txt"},
+        state:{path:"../../基础篇/README.md"},
 
     };
     onCollapse = collapsed => {
@@ -23,7 +23,6 @@ class SiderHome extends React.Component {
         this.setState({ collapsed });
     };
     onClick = event => {
-        this.query.state = {path:"https://github.com/87-midnight/NewbieInJava/基础篇/基础知识/Object基类概述/README.md"};
         console.log(event);
     };
 

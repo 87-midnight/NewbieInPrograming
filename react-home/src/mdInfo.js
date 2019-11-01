@@ -1,4 +1,4 @@
-var files=[
+const files=[
     {
         "name":"云游DevOps篇",
         "id":1,

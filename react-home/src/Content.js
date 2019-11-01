@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import marked from 'marked'
 import hljs from "highlight.js";
 import 'highlight.js/styles/monokai-sublime.css';
-
+import axios from "axios";
 marked.setOptions({
 
     renderer: new marked.Renderer(),
@@ -19,20 +19,17 @@ marked.setOptions({
 
 });
 
-const load = path=>{
-    let xhr = new XMLHttpRequest(),
-        okStatus = document.location.protocol === "file:" ? 0 : 200;
-    xhr.open('GET', path, false);
-    xhr.overrideMimeType("text/plain;charset=utf-8");//默认为utf-8
-    xhr.send(null);
-    return xhr.status === okStatus ? xhr.responseText : null;
-};
-
 class Contents extends Component {
 
-    parseHtml(){
-        let text = load(this.query());
-        return marked(text);
+    state = {
+      html:"<div>default</div>"
+    };
+    parseHtml(path){
+        axios.get(path).then(s=>{
+            let res = marked(s.data);
+            console.log(res);
+            this.setState({html:res});
+        });
     }
     query(){
         let state = this.props.location.state;
@@ -40,8 +37,9 @@ class Contents extends Component {
         return state.path;
     }
     render() {
+        this.parseHtml(this.query());
         return (
-            <div id="content" dangerouslySetInnerHTML = {{__html: this.parseHtml()}}></div>
+            <div id="content" dangerouslySetInnerHTML = {{__html:this.state.html }}></div>
         );
     }
 }
