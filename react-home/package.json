@@ -9,6 +9,7 @@
     "http-proxy-middleware": "^0.20.0",
     "markdown-loader": "^5.1.0",
     "marked": "^0.7.0",
+    "qs": "^6.9.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
@@ -35,5 +36,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy":"https://github.com/87-midnight/NewbieInJava"
+  "proxy": "https://github.com/87-midnight/NewbieInJava"
 }

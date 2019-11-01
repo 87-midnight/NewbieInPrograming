@@ -9,14 +9,15 @@ import {
 }from 'react-router-dom';
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
+const a = 'https://github.com/87-midnight/NewbieInJava/基础篇/README.md';
 class SiderHome extends React.Component {
     state = {
         collapsed: false,
     };
     query = {
-        pathname:"/content",
-        state:{path:"/NewbieInJava/基础篇/README.md"},
-
+        pathname:`/content?source=${a}`,
+        // pathname:"/content",
+        // state:{path:"/NewbieInJava/基础篇/README.md"},
     };
     onCollapse = collapsed => {
         console.log(collapsed);
