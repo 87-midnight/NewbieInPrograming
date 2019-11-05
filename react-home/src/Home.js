@@ -1,6 +1,7 @@
 
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import Contents from "./Content";
+import list from "./mdInfo";
 import React from 'react';
 import {
     BrowserRouter as Router,
@@ -28,6 +29,9 @@ class SiderHome extends React.Component {
     };
 
     render() {
+        list.map(function (s) {
+            console.log(s);//s为数组里的一个对象
+        });
         return (
             <Router>
             <Layout style={{ minHeight: '100vh' }}>
