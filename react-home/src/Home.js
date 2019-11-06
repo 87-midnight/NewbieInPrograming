@@ -27,11 +27,26 @@ class SiderHome extends React.Component {
     onClick = event => {
         console.log(event);
     };
-
+    tree = node =>{
+        if (node.children !== undefined && node.children.length >0){
+            for (let c of node.children){
+                return (<SubMenu key={node.id} title={<span>{node.name}</span>}>
+                        {this.tree(c)}
+                    </SubMenu>)
+            }
+        }
+        return(<Menu.Item key={node.id}>{node.name}</Menu.Item>);
+    };
     render() {
-        list.map(function (s) {
-            console.log(s);//s为数组里的一个对象
+
+        let s = list.files.map(s=>{
+            return this.tree(s);
         });
+        let menu = list.files.map(
+            function (s) {
+                return(<Menu.Item key={s.id}>{s.name}</Menu.Item>)
+            }
+        );
         return (
             <Router>
             <Layout style={{ minHeight: '100vh' }}>
@@ -55,9 +70,7 @@ class SiderHome extends React.Component {
                 </span>
                             }
                         >
-                            <Menu.Item key="3">Tom</Menu.Item>
-                            <Menu.Item key="4">Bill</Menu.Item>
-                            <Menu.Item key="5">Alex</Menu.Item>
+                            {s}
                         </SubMenu>
                         <SubMenu
                             key="sub2"

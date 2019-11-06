@@ -14,35 +14,35 @@ const files=[
             },
             {
                 "name":"gitlab基础介绍及应用",
-                "id":2,
+                "id":3,
                 "level":2,
                 "file":"./云游DevOps篇/gitlab基础介绍及应用/README.md",
                 "children":[]
             },
             {
                 "name":"jekins介绍及应用",
-                "id":2,
+                "id":4,
                 "level":2,
                 "file":"./云游DevOps篇/jekins介绍及应用/README.md",
                 "children":[]
             },
             {
                 "name":"pinpoint介绍及应用",
-                "id":2,
+                "id":5,
                 "level":2,
                 "file":"./云游DevOps篇/pinpoint介绍及应用/README.md",
                 "children":[]
             },
             {
                 "name":"skywalking介绍及应用",
-                "id":2,
+                "id":6,
                 "level":2,
                 "file":"./云游DevOps篇/skywalking介绍及应用/README.md",
                 "children":[]
             },
             {
                 "name":"zabbix基础介绍及应用",
-                "id":2,
+                "id":7,
                 "level":2,
                 "file":"./云游DevOps篇/zabbix基础介绍及应用/README.md",
                 "children":[]
@@ -50,135 +50,135 @@ const files=[
         ]
     },{
        "name":"基础篇",
-        "id":2,
+        "id":8,
         "level":1,
         "file":"./基础篇/README.md",
         "children":[
             {
                 "name":"NIO概述及应用",
-                "id":2,
+                "id":9,
                 "level":2,
                 "file":"./基础篇/NIO概述及应用/README.md",
                 "children":[]
             },
             {
                 "name":"SPI原理",
-                "id":2,
+                "id":10,
                 "level":2,
                 "file":"./基础篇/SPI原理/README.md",
                 "children":[]
             },
             {
                 "name":"udp及tcp介绍和应用",
-                "id":2,
+                "id":11,
                 "level":2,
                 "file":"./基础篇/udp及tcp介绍和应用/README.md",
                 "children":[]
             },
             {
                 "name":"基础知识",
-                "id":2,
+                "id":12,
                 "file":"./基础篇/基础知识/README.md",
                 "children":[
                     {
                         "name":"list、map、set、collection的概述和原理及拓展",
-                        "id":11,
+                        "id":13,
                         "level":3,
                         "file":"./基础篇/基础知识/list、map、set、collection的概述和原理及拓展/README.md",
                         "children":[]
                     },{
                         "name":"Object基类概述",
-                        "id":11,
+                        "id":14,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"反射原理和应用",
-                        "id":11,
+                        "id":15,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"基础数据类型",
-                        "id":11,
+                        "id":16,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"基础运算符和常见保留字",
-                        "id":11,
+                        "id":17,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"对象克隆、序列化介绍及应用",
-                        "id":11,
+                        "id":18,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"Object基类概述",
-                        "id":11,
+                        "id":19,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"常见的内置接口类概述及应用",
-                        "id":11,
+                        "id":20,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"常见的封装类型",
-                        "id":11,
+                        "id":21,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"异常介绍及应用",
-                        "id":11,
+                        "id":22,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"正则表达式概述及应用",
-                        "id":11,
+                        "id":23,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"Object基类概述",
-                        "id":11,
+                        "id":24,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"流的概述和常见的流对象使用",
-                        "id":11,
+                        "id":25,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"类加载器原理及应用",
-                        "id":11,
+                        "id":26,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"线程基础介绍及应用",
-                        "id":11,
+                        "id":27,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"进制转换概述及应用",
-                        "id":11,
+                        "id":28,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
                     },{
                         "name":"面向对象的特性和类的全面阐述",
-                        "id":11,
+                        "id":29,
                         "level":3,
                         "file":"./基础篇/基础知识/Object基类概述/README.md",
                         "children":[]
@@ -187,28 +187,28 @@ const files=[
             },
             {
                 "name":"多线程与线程池及相关使用类",
-                "id":2,
+                "id":30,
                 "level":2,
                 "file":"./基础篇/多线程与线程池及相关使用类/README.md",
                 "children":[]
             },
             {
                 "name":"工具包部分介绍",
-                "id":2,
+                "id":31,
                 "level":2,
                 "file":"./基础篇/工具包部分介绍/README.md",
                 "children":[]
             },
             {
                 "name":"文件操作教程",
-                "id":2,
+                "id":32,
                 "level":2,
                 "file":"./基础篇/文件操作教程/README.md",
                 "children":[]
             },
             {
                 "name":"设计模式",
-                "id":2,
+                "id":33,
                 "level":2,
                 "file":"./基础篇/设计模式/README.md",
                 "children":[]
