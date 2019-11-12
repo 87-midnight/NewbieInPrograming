@@ -22,6 +22,7 @@
         <module>dubbo-generic-sample</module>
         <module>dubbo-web-sample</module>
         <module>redis-sample</module>
+        <module>jdbc-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
