@@ -1,10 +1,12 @@
 package com.lcg.sample.config;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -16,25 +18,25 @@ import javax.sql.DataSource;
 @Configuration
 public class JdbcConfig {
 
-    @Bean(name = "mysql")
+    @Bean(name = "mysqlDataSource")
+    @Primary
     @ConfigurationProperties(prefix = "spring.datasource.first")
     public DataSource initMysql(){
         return DruidDataSourceBuilder.create().build();
     }
 
-    @Bean(name = "postgres")
+    @Bean(name = "postgresDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.second")
     public DataSource initPostgres(){
-        return DruidDataSourceBuilder.create().build();
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setDbType("PostgreSqlDialect");
+        return dataSource;
     }
 
     @Bean(name = "mysqlTemplate")
-    JdbcTemplate jdbcTemplateOne(@Qualifier("mysql") DataSource dsOne) {
+    JdbcTemplate jdbcTemplateOne(@Qualifier("mysqlDataSource") DataSource dsOne) {
         return new JdbcTemplate(dsOne);
     }
 
-    @Bean(name = "postgresTemplate")
-    JdbcTemplate jdbcTemplateTwo(@Qualifier("postgres") DataSource dsTwo) {
-        return new JdbcTemplate(dsTwo);
-    }
 }
