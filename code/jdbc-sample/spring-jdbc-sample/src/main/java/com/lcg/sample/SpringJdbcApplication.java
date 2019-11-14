@@ -21,10 +21,7 @@ import java.util.List;
 public class SpringJdbcApplication {
 
     @Autowired
-    private JdbcTemplate postgres;
-    @Qualifier(value = "mysqlDataSource")
-    @Autowired
-    private DataSource dataSource;
+    private JdbcTemplate jdbcTemplate;
 
     public static void main(String...args){
         SpringApplication.run(SpringJdbcApplication.class,args);
@@ -33,8 +30,7 @@ public class SpringJdbcApplication {
     @Bean
     public CommandLineRunner postgres(){
         return s->{
-            this.postgres.setDataSource(dataSource);
-            List list = this.postgres.queryForList("select * from user");
+            List list = this.jdbcTemplate.queryForList("select * from user");
             log.info("{}",list);
         };
     }
