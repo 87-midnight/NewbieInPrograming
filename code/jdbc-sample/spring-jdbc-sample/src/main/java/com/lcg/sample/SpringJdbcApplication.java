@@ -30,8 +30,16 @@ public class SpringJdbcApplication {
     @Bean
     public CommandLineRunner postgres(){
         return s->{
+            batchInsert();
             List list = this.jdbcTemplate.queryForList("select * from user");
             log.info("{}",list);
         };
+    }
+
+    private void batchInsert(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("insert into user values(2,'cat','female','paradise')");
+        sb.append("insert into user values(3,'dog','female','paradise')");
+        this.jdbcTemplate.batchUpdate(sb.toString());
     }
 }
