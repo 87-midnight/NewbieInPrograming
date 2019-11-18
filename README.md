@@ -1,3 +1,6 @@
+[![Build Status](https://secure.travis-ci.org/revel/revel.svg?branch=master)](http://travis-ci.org/revel/revel) 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Go Report Card](https://goreportcard.com/report/github.com/87-midnight/NewbieInPrograming)](https://goreportcard.com/report/github.com/87-midnight/NewbieInPrograming)
 # NewbieInJava
 java basic &amp; advanced  grammar with code and description，summarize  lots of interview subjects
 
