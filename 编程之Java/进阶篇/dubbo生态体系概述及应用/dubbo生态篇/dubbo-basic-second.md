@@ -10,9 +10,9 @@
 
 **示例代码：**
 
-- [dubbo-service1](../../../code/dubbo-generic-sample/dubbo-service1)
+- [dubbo-service1](../../../../code/dubbo-generic-sample/dubbo-service1)
     - 分布式服务1，弱化了隶属提供方或消费方
-- [dubbo-service2](../../../code/dubbo-generic-sample/dubbo-service2)
+- [dubbo-service2](../../../../code/dubbo-generic-sample/dubbo-service2)
     - 分布式服务2，弱化了隶属提供方或消费方
     
 ###### 泛化引用实现步骤

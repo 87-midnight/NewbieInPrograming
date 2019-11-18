@@ -1,11 +1,11 @@
 ### dubbo配置及启动方式
 
 >- 非web容器xml方式启动
->   - [消费方xml方式](../../../code/dubbo-zookeeper-sample/basic-consumer-sample)
->   - [提供方xml方式](../../../code/dubbo-zookeeper-sample/basic-provider-sample)
+>   - [消费方xml方式](../../../../code/dubbo-zookeeper-sample/basic-consumer-sample)
+>   - [提供方xml方式](../../../../code/dubbo-zookeeper-sample/basic-provider-sample)
 >- 非web容器注解方式启动
->   - [消费方注解方式](../../../code/dubbo-zookeeper-sample/basic-consumer-sample)
->   - [提供方注解方式](../../../code/dubbo-zookeeper-sample/basic-provider-sample)
+>   - [消费方注解方式](../../../../code/dubbo-zookeeper-sample/basic-consumer-sample)
+>   - [提供方注解方式](../../../../code/dubbo-zookeeper-sample/basic-provider-sample)
 
 
 **xml配置方式**

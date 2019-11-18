@@ -1,6 +1,6 @@
 ### 对象克隆与序列化
 
-示例：[点我查看](../../../code/clone-serializable-sample)
+示例：[点我查看](../../../../code/clone-serializable-sample)
 
 对象克隆实现方式：
 

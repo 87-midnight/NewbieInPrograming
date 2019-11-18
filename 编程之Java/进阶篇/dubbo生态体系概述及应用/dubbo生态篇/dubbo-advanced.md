@@ -2,7 +2,7 @@
 
 >- 以web容器注解方式启动
 >   - SpringMVC方式
->   - [dubbo-web-sample](../../../code/dubbo-web-sample)
+>   - [dubbo-web-sample](../../../../code/dubbo-web-sample)
 
 **基础SpringMVC配置使用在这不展开**
 

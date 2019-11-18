@@ -354,5 +354,5 @@ public class RedisCache implements Cache{
 ```
 需要缓存的对象必须实现Serializable接口。
 
-具体代码请看:[mybatis](../../../code/spring-boot-mybatis-sample)
+具体代码请看:[mybatis](../../../../code/spring-boot-mybatis-sample)
  

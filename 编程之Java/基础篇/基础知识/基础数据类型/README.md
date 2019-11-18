@@ -19,7 +19,7 @@
 |char	|2 	|16 	|0～65535 	|0~2^16-1
 |boolean |1 |8 	|true或false|	true或false
 
-代码示例：[点我查看](../../../code/basic-arithm-data-type-sample)
+代码示例：[点我查看](../../../../code/basic-arithm-data-type-sample)
 
 ###### byte
 
