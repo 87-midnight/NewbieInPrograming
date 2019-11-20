@@ -1,21 +1,24 @@
 package job
 
 import (
-	"fmt"
 	"github.com/robfig/cron"
+	log "github.com/sirupsen/logrus"
 )
-import "log"
+
+type Hello struct {
+	Str string
+}
+
+func (h Hello) Run() {
+	log.Println(h.Str)
+}
 
 func StartJob() {
-	i := 0
+	log.Info("开始定时任务")
 	c := cron.New()
-	spec := "0/5 * * * * ?"
-	c.AddFunc(spec, func() {
-		i++
-		fmt.Printf("hello,%d", i)
-		log.Printf("cron running:%d", i)
-	})
+	h := Hello{"I Love You!"}
+	spec := "*/2 * * * * ?"
+	c.AddJob(spec, h)
 	c.Start()
-
 	select {}
 }
