@@ -4,6 +4,7 @@
 [![Build Status](https://secure.travis-ci.org/87-midnight/NewbieInPrograming.svg?branch=master)](http://travis-ci.org/87-midnight/NewbieInPrograming) 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/87-midnight/NewbieInPrograming)](https://goreportcard.com/report/github.com/87-midnight/NewbieInPrograming)
+[![Coverage Status](https://coveralls.io/repos/github/87-midnight/NewbieInPrograming/badge.svg?branch=master)](https://coveralls.io/github/87-midnight/NewbieInPrograming?branch=master)
 
 java basic &amp; advanced  grammar with code and description，summarize  lots of interview subjects
 
