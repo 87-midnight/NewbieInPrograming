@@ -6,3 +6,5 @@
 
 #### 网络通讯模块
 
+
+部分参考：http://c.biancheng.net/view/3174.html
