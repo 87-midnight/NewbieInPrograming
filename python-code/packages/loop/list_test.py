@@ -1,4 +1,11 @@
 # -*- coding:utf8 -*-
+import sys
+
+sys.path.append("J:\\NewbieInPrograming\\python-code\\packages\\")
+
+# 引用同级目录的py文件时，需要先设置一个根路径，这样python执行当前文件时
+# 会在sys.path下去找其他包的文件
+from dateTime import time_test
 
 
 def list_():
@@ -13,3 +20,7 @@ def map_():
         print(_map.get("2"))
     for key in _map.keys():
         print("[%s,%s]" % (key, _map.get(key)))
+
+
+if __name__ == '__main__':
+    time_test()
