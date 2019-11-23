@@ -10,6 +10,7 @@ from packages.file import write_files
 from packages.loop import for_test
 from packages.loop import list_
 from packages.loop import map_
+from packages.mysql import query_user
 
 
 def hello():
@@ -35,3 +36,4 @@ if __name__ == '__main__':
     print("user1实例化信息:%s" % user1.to_string())
     reg_exp("abc","abcdwadafgabcdfgk243abc43da")
     time_test()
+    query_user()
