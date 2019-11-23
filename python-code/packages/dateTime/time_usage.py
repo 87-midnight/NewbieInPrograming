@@ -1,10 +1,7 @@
 import time
-import os,sys
+import sys
 
-# 可以使用os.path获取当前文件的上级目录路径，这样也能访问同级目录的文件了
-root_dir = os.path.dirname(os.path.abspath('.'))
-sys.path.append(root_dir+"\\")
-print(sys.path)
+sys.path.append("J:\\NewbieInPrograming\\python-code\\packages\\")
 
 from loop import *
 
