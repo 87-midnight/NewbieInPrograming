@@ -1,16 +1,16 @@
 
-# NewbieInJava
+# NewbieInPrograming
 
 [![Build Status](https://secure.travis-ci.org/87-midnight/NewbieInPrograming.svg?branch=master)](http://travis-ci.org/87-midnight/NewbieInPrograming) 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/87-midnight/NewbieInPrograming)](https://goreportcard.com/report/github.com/87-midnight/NewbieInPrograming)
 [![Coverage Status](https://coveralls.io/repos/github/87-midnight/NewbieInPrograming/badge.svg?branch=master)](https://coveralls.io/github/87-midnight/NewbieInPrograming?branch=master)
 
-java basic &amp; advanced  grammar with code and description，summarize  lots of interview subjects
+>more about java , python  and golang . basic & advanced  grammar with code and description，summarize  lots of interview subjects. python、golang、java基础、进阶语法记录，总结各类面试题
 
 ## 传送门
 
-**[web页面查看:](https://87-midnight.github.io/NewbieInJava/index.html)** 
+**[web页面查看:](https://87-midnight.github.io/NewbieInPrograming/index.html)** 
 
 **README方式查看**
 
