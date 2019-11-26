@@ -4,6 +4,13 @@
 
 #### Dockerfile 配置介绍
 
+```dockerfile
+from centos:latest
+maintainent Fpx
+
+build 
+```
+
 #### 网络通讯模块
 
 
