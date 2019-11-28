@@ -4,8 +4,6 @@
 
 #### Dockerfile 配置介绍
 
-##### 常见命令
-
 - FROM
 > FROM指令初始化一个新的构建阶段，并为后续指令设置基映像。因此，有效的Dockerfile必须以FROM指令开头
 
@@ -42,6 +40,9 @@ FROM busybox:$VERSION
 ARG VERSION
 RUN echo $VERSION > image_version
 ```
+
+在build的时候通过docker build --build-arg var=xxx 来传递ARG参数,通常ARG可以结合ENV一起使用
+
 
 - RUN
 
@@ -201,6 +202,379 @@ docker run -p80:80/tcp
 
 
 - ENV
+
+> ENV用法是把key-value的键值设置到环境变量中
+这个值将出现在构建阶段中所有后续指令的环境中，并且可以在许多情况下被内联替换。
+
+>ENV指令有两种形式。第一个表单ENV<key><value>将单个变量设置为一个值。第一个空格后的整个字符串将被视为包含空白字符的<value>。将为其他环境变量解释该值，因此如果引号字符没有转义，则将删除它们。
+第二种形式ENV<key>=<value>..允许一次设置多个变量。注意，第二个表单在语法中使用等号（=），而第一个表单不使用等号（=）。与命令行解析类似，引号和反斜杠可用于在值中包含空格。
+
+**例如：**
+
+```
+ENV myName="John Doe" myDog=Rex\ The\ Dog \
+    myCat=fluffy
+ENV myName John Doe
+ENV myDog Rex The Dog
+ENV myCat fluffy
+```
+
+ENV主要是定义环境变量，在docker run的时候ENV的配置会加载到容易内部，但ARG的参数在内部是没法看到的。同时也可以通过下面命令更改ENV的默认值：
+
+```
+docker run -e var=yyy
+```
+
+- ADD && COPY
+
+***Build 上下文的概念***
+
+>- 在使用 docker build 命令通过 Dockerfile 创建镜像时，会产生一个 build 上下文(context)。所谓的 build 上下文就是 docker build 命令的 PATH 或 URL 指定的路径中的文件的集合。在镜像 build 过程中可以引用上下文中的任何文件，比如我们要介绍的 COPY 和 ADD 命令，就可以引用上下文中的文件。
+>- 默认情况下 docker build -t testx . 命令中的 . 表示 build 上下文为当前目录。当然我们可以指定一个目录作为上下文，比如下面的命令：
+
+```
+docker build -t testx /home/nick/hc
+``` 
+
+我们指定 /home/nick/hc 目录为 build 上下文，默认情况下 docker 会使用在上下文的根目录下找到的 Dockerfile 文件。
+
+***COPY 和 ADD 命令不能拷贝上下文之外的本地文件***
+
+对于 COPY 和 ADD 命令来说，如果要把本地的文件拷贝到镜像中，那么本地的文件必须是在上下文目录中的文件。其实这一点很好解释，因为在执行 build 命令时，docker 客户端会把上下文中的所有文件发送给 docker daemon。考虑 docker 客户端和 docker daemon 不在同一台机器上的情况，build 命令只能从上下文中获取文件。如果我们在 Dockerfile 的 COPY 和 ADD 命令中引用了上下文中没有的文件，就会收到类似下面的错误：
+```
+COPY failed:no such file or directory
+```
+
+**与 WORKDIR 协同工作**
+
+WORKDIR 命令为后续的 RUN、CMD、COPY、ADD 等命令配置工作目录。在设置了 WORKDIR 命令后，接下来的 COPY 和 ADD 命令中的相对路径就是相对于 WORKDIR 指定的路径。比如我们在 Dockerfile 中添加下面的命令：
+
+```
+WORKDIR /app
+COPY checkredis.py .
+```
+checkredis.py 文件就是被复制到了 WORKDIR /app 目录下。
+
+###### COPY
+
+如果仅仅是把本地的文件拷贝到容器镜像中，COPY 命令是最合适不过的。其命令的格式为：
+
+```COPY <src> <dest>```
+
+除了指定完整的文件名外，COPY 命令还支持 Go 风格的通配符，比如：
+
+```
+COPY check* /testdir/           # 拷贝所有 check 开头的文件
+COPY check?.log /testdir/       # ? 是单个字符的占位符，比如匹配文件 check1.log
+```
+对于目录而言，COPY 和 ADD 命令具有相同的特点：只复制目录中的内容而不包含目录自身。比如我们在 Dockerfile 中添加下面的命令：
+```
+WORKDIR /app
+COPY nickdir .
+```
+其中，nickdir目录下包含两个目录file1,file2.
+那么/app目录下则只是包含了file1,file2.
+
+如果想让 file1 和 file2 还保存在 nickdir 目录中，需要在目标路径中指定这个目录的名称，比如：
+```
+WORKDIR /app
+COPY nickdir ./nickdir
+```
+
+COPY 命令区别于 ADD 命令的一个用法是在 multistage 场景下。关于 multistage 的介绍和用法请参考笔者的《Dockerfile 中的 multi-stage》一文。在 multistage 的用法中，可以使用 COPY 命令把前一阶段构建的产物拷贝到另一个镜像中，比如：
+
+```dockerfile
+FROM golang:1.7.3
+WORKDIR /go/src/github.com/sparkdevo/href-counter/
+RUN go get -d -v golang.org/x/net/html
+COPY app.go    .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=0 /go/src/github.com/sparkdevo/href-counter/app .
+CMD ["./app"]
+```
+其中的 COPY 命令通过指定 --from=0 参数，把前一阶段构建的产物拷贝到了当前的镜像中。
+
+###### ADD
+
+```
+ADD <src> <dest>
+```
+
+除了不能用在 multistage 的场景下，ADD 命令可以完成 COPY 命令的所有功能，并且还可以完成两类超酷的功能：
+
+- 解压压缩文件并把它们添加到镜像中
+- 从 url 拷贝文件到镜像中
+
+**解压压缩文件并把它们添加到镜像中:**
+
+>如果我们有一个压缩文件包，并且需要把这个压缩包中的文件添加到镜像中。需不需要先解开压缩包然后执行 COPY 命令呢？当然不需要！我们可以通过 ADD 命令一次搞定：
+
+```
+WORKDIR /app
+ADD nickdir.tar.gz .
+```
+
+**从 url 拷贝文件到镜像中:**
+
+>这是一个更加酷炫的用法！但是在 docker 官方文档的最佳实践中却强烈建议不要这么用！！docker 官方建议我们当需要从远程复制文件时，最好使用 curl 或 wget 命令来代替 ADD 命令。原因是，当使用 ADD 命令时，会创建更多的镜像层，当然镜像的 size 也会更大(下面的两段代码来自 docker 官方文档)：
+
+```
+ADD http://example.com/big.tar.xz /usr/src/things/
+RUN tar -xJf /usr/src/things/big.tar.xz -C /usr/src/things
+RUN make -C /usr/src/things all
+```
+
+如果使用下面的命令，不仅镜像的层数减少，而且镜像中也不包含 big.tar.xz 文件：
+
+```
+RUN mkdir -p /usr/src/things \
+    && curl -SL http://example.com/big.tar.xz \
+    | tar -xJC /usr/src/things \
+    && make -C /usr/src/things all
+```
+
+>Note:总结，ADD命令常用于解压压缩文件并复制到镜像内
+
+
+###### 加速镜像构建的技巧
+
+>在使用 COPY 和 ADD 命令时，我们可以通过一些技巧来加速镜像的 build 过程。比如把那些最不容易发生变化的文件的拷贝操作放在较低的镜像层中，这样在重新 build 镜像时就会使用前面 build 产生的缓存
+
+例如：checkmysql.py,checkmongo.py,checkredis.py,start.py
+
+start.py不会经常发生变更，而其他三个文件会经常变动，那么在使用COPY命令的时候，可以按照文件/目录更新频率来分步骤使用，如：
+```dockerfile
+WORKDIR /root
+COPY start.py .
+COPY check*.py .
+```
+这样每次构建镜像时，只要start.py不变，就会使用cache，从而加速构建过程
+
+
+- ENTRYPOINT
+
+ENTRYPOINT有两种形式：
+
+- ``ENTRYPOINT ["executable", "param1", "param2"]`` （执行表格，首选）
+- ``ENTRYPOINT command param1 param2`` （外壳形式）
+
+An ENTRYPOINT允许您配置将作为可执行文件运行的容器。
+
+例如，以下将使用其默认内容启动nginx，并监听端口80：
+```
+docker run -i -t --rm -p 80:80 nginx
+```
+
+命令行参数to docker run <image>将以exec形式附加在所有元素之后ENTRYPOINT，并将覆盖使用指定的所有元素CMD。这允许将参数传递给入口点，即，docker run <image> -d 将-d参数传递给入口点。您可以ENTRYPOINT使用该docker run --entrypoint 标志覆盖指令。
+
+所述壳形式防止任何CMD或run被使用命令行参数，但具有的缺点是你ENTRYPOINT将开始作为的子命令/bin/sh -c，其不通过信号。这意味着该可执行文件将不是容器的PID 1-并且不会接收Unix信号-因此您的可执行文件将不会SIGTERM从接收 到docker stop <container>。
+
+只有其中的最后一条ENTRYPOINT指令Dockerfile才会生效。
+
+执行表单ENTRYPOINT示例
+
+您可以使用exec形式的ENTRYPOINT来设置相当稳定的默认命令和参数，然后使用这两种形式的CMD来设置更可能被更改的其他默认值。
+
+```
+FROM ubuntu
+ENTRYPOINT ["top", "-b"]
+CMD ["-c"]
+```
+
+运行容器时，可以看到这top是唯一的过程：
+
+```cmd
+docker run -it --rm --name test  top -H
+top - 08:25:00 up  7:27,  0 users,  load average: 0.00, 0.01, 0.05
+Threads:   1 total,   1 running,   0 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.1 us,  0.1 sy,  0.0 ni, 99.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem:   2056668 total,  1616832 used,   439836 free,    99352 buffers
+KiB Swap:  1441840 total,        0 used,  1441840 free.  1324440 cached Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+    1 root      20   0   19744   2336   2080 R  0.0  0.1   0:00.04 top
+```
+要进一步检查结果，可以使用docker exec：
+
+```
+$ docker exec -it test ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  2.6  0.1  19752  2352 ?        Ss+  08:24   0:00 top -b -H
+root         7  0.0  0.1  15572  2164 ?        R+   08:25   0:00 ps aux
+```
+
+您也可以使用优雅地请求top关闭docker stop test。
+
+下面Dockerfile显示了使用ENTRYPOINT来在前台运行Apache（即as PID 1）：
+
+```
+FROM debian:stable
+RUN apt-get update && apt-get install -y --force-yes apache2
+EXPOSE 80 443
+VOLUME ["/var/www", "/var/log/apache2", "/etc/apache2"]
+ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+```
+
+如果需要为单个可执行文件编写启动脚本，则可以使用exec和gosu 命令确保最终的可执行文件接收Unix信号
+
+```sbtshell
+#!/usr/bin/env bash
+set -e
+
+if [ "$1" = 'postgres' ]; then
+    chown -R postgres "$PGDATA"
+
+    if [ -z "$(ls -A "$PGDATA")" ]; then
+        gosu postgres initdb
+    fi
+
+    exec gosu postgres "$@"
+fi
+
+exec "$@"
+```
+最后，如果您需要在关闭时进行一些额外的清理（或与其他容器通信），或者协调多个可执行文件，则可能需要确保ENTRYPOINT脚本接收Unix信号，将其传递，然后执行一些更多的工作：
+
+```
+#!/bin/sh
+# Note: I've written this using sh so it works in the busybox container too
+
+# USE the trap if you need to also do manual cleanup after the service is stopped,
+#     or need to start multiple services in the one container
+trap "echo TRAPed signal" HUP INT QUIT TERM
+
+# start service in background here
+/usr/sbin/apachectl start
+
+echo "[hit enter key to exit] or run 'docker stop <container>'"
+read
+
+# stop service and clean up here
+echo "stopping apache"
+/usr/sbin/apachectl stop
+
+echo "exited $0"
+```
+
+如果使用来运行该映像docker run -it --rm -p 80:80 --name test apache，则可以使用docker exec或来检查容器的进程docker top，然后要求脚本停止Apache：
+
+```
+$ docker exec -it test ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.1  0.0   4448   692 ?        Ss+  00:42   0:00 /bin/sh /run.sh 123 cmd cmd2
+root        19  0.0  0.2  71304  4440 ?        Ss   00:42   0:00 /usr/sbin/apache2 -k start
+www-data    20  0.2  0.2 360468  6004 ?        Sl   00:42   0:00 /usr/sbin/apache2 -k start
+www-data    21  0.2  0.2 360468  6000 ?        Sl   00:42   0:00 /usr/sbin/apache2 -k start
+root        81  0.0  0.1  15572  2140 ?        R+   00:44   0:00 ps aux
+$ docker top test
+PID                 USER                COMMAND
+10035               root                {run.sh} /bin/sh /run.sh 123 cmd cmd2
+10054               root                /usr/sbin/apache2 -k start
+10055               33                  /usr/sbin/apache2 -k start
+10056               33                  /usr/sbin/apache2 -k start
+$ /usr/bin/time docker stop test
+test
+real	0m 0.27s
+user	0m 0.03s
+sys	0m 0.03s
+```
+
+>- 注意：您可以使用覆盖ENTRYPOINT设置--entrypoint，但这只能将二进制文件设置为exec（sh -c将不使用）
+>- 注意：exec表单被解析为JSON数组，这意味着您必须在单词而非单引号（'）周围使用双引号（“）。
+>- 注意：与shell表单不同，exec表单不会调用命令shell。这意味着正常的外壳处理不会发生。例如， ENTRYPOINT [ "echo", "$HOME" ]将不会对进行变量替换$HOME。如果要进行shell处理，则可以使用shell形式或直接执行shell，例如：ENTRYPOINT [ "sh", "-c", "echo $HOME" ]。当使用exec表单并直接执行shell时（例如在shell表单中），是由shell进行环境变量扩展，而不是docker。
+
+###### Shell形式ENTRYPOINT示例
+
+>您可以为指定一个纯字符串ENTRYPOINT，它将在中执行/bin/sh -c。这种形式将使用外壳处理来替代外壳环境变量，并且将忽略任何CMD或docker run命令行参数。为了确保能够正确docker stop发出任何长期运行的ENTRYPOINT可执行文件信号，您需要记住以以下命令启动它exec：
+
+```
+FROM ubuntu
+ENTRYPOINT exec top -b
+```
+
+运行此镜像时，您将看到单个PID 1过程：
+
+```
+$ docker run -it --rm --name test top
+Mem: 1704520K used, 352148K free, 0K shrd, 0K buff, 140368121167873K cached
+CPU:   5% usr   0% sys   0% nic  94% idle   0% io   0% irq   0% sirq
+Load average: 0.08 0.03 0.05 2/98 6
+  PID  PPID USER     STAT   VSZ %VSZ %CPU COMMAND
+    1     0 root     R     3164   0%   0% top -b
+```
+它将在docker stop以下位置干净地退出：
+
+```
+$ /usr/bin/time docker stop test
+test
+real	0m 0.20s
+user	0m 0.02s
+sys	0m 0.04s
+```
+
+如果您忘记添加exec到您的开头ENTRYPOINT：
+
+```
+FROM ubuntu
+ENTRYPOINT top -b
+CMD --ignored-param1
+```
+
+然后，您可以运行它（为下一步命名）：
+
+```
+$ docker run -it --name test top --ignored-param2
+Mem: 1704184K used, 352484K free, 0K shrd, 0K buff, 140621524238337K cached
+CPU:   9% usr   2% sys   0% nic  88% idle   0% io   0% irq   0% sirq
+Load average: 0.01 0.02 0.05 2/101 7
+  PID  PPID USER     STAT   VSZ %VSZ %CPU COMMAND
+    1     0 root     S     3168   0%   0% /bin/sh -c top -b cmd cmd2
+    7     1 root     R     3164   0%   0% top -b
+```
+
+您可以从输出中top看到，指定ENTRYPOINT的不是PID 1。
+
+如果随后运行docker stop test，容器将不会干净退出- 超时后将stop强制命令发送a SIGKILL：
+
+```
+$ docker exec -it test ps aux
+PID   USER     COMMAND
+    1 root     /bin/sh -c top -b cmd cmd2
+    7 root     top -b
+    8 root     ps aux
+$ /usr/bin/time docker stop test
+test
+real	0m 10.19s
+user	0m 0.04s
+sys	0m 0.03s
+```
+
+###### 了解CMD和ENTRYPOINT如何相互作用
+
+无论CMD和ENTRYPOINT指令定义运行的容器中时什么命令得到执行。很少有规则描述他们的合作。
+
+1. Dockerfile应该至少指定CMD或ENTRYPOINT命令之一。
+
+2. ENTRYPOINT 使用容器作为可执行文件时应定义。
+
+3. CMD应该用作ENTRYPOINT在容器中定义命令或执行临时命令的默认参数的方式。
+
+4. CMD 使用替代参数运行容器时，将被覆盖。
+
+下表显示了针对不同ENTRYPOINT/ CMD组合执行的命令：
+
+ss|没有入口点|	ENTRYPOINT exec_entry p1_entry|	ENTRYPOINT [“ exec_entry”，“ p1_entry”]|
+|:----:|:----:|:----:|:----:|
+没有CMD|	错误，不允许|	/ bin / sh -c exec_entry p1_entry|	exec_entry p1_entry| |
+CMD [“ exec_cmd”，“ p1_cmd”]	|exec_cmd p1_cmd|	/ bin / sh -c exec_entry p1_entry|	exec_entry p1_entry exec_cmd p1_cmd||
+CMD [“ p1_cmd”，“ p2_cmd”]|	p1_cmd p2_cmd|	/ bin / sh -c exec_entry p1_entry|	exec_entry p1_entry p1_cmd p2_cmd||
+CMD exec_cmd p1_cmd|	/ bin / sh -c exec_cmd p1_cmd|	/ bin / sh -c exec_entry p1_entry|	exec_entry p1_entry / bin / sh -c exec_cmd p1_cmd||
+
+>注意：如果CMD是从基础镜像定义的，则设置ENTRYPOINT将重置CMD为空值。在这种情况下，CMD必须在当前镜像中定义一个值。
 
 
 #### 网络通讯模块
