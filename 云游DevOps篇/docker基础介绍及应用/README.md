@@ -18,6 +18,10 @@ FROM <image>[@<digest>] [AS <name>]
 ```
 
 - ARG 
+```
+ARG <name>[=<default value>]
+```
+
 >变量。在FROM之前声明的参数不在生成阶段中，因此不能在FROM之后的任何指令中使用。
 要使用在第一个FROM之前声明的ARG的默认值，请使用构建阶段中没有值的ARG指令：
 
@@ -42,6 +46,137 @@ RUN echo $VERSION > image_version
 ```
 
 在build的时候通过docker build --build-arg var=xxx 来传递ARG参数,通常ARG可以结合ENV一起使用
+
+**作用范围**
+
+>一个ARG变量定义进入从在其上在限定的线效果Dockerfile不从参数对命令行或其他地方使用。例如，考虑以下Dockerfile：
+```
+1 FROM busybox
+2 USER ${user:-some_user}
+3 ARG user
+4 USER $user
+```
+用户通过调用以下命令来构建此文件：
+```
+$ docker build --build-arg user=what_user .
+```
+USER在第2行，at some_user在user变量3上定义为。USER在第4 行，at 定义为what_useras user，并且what_user在命令行上传递了值。在通过ARG指令定义变量之前 ，任何对变量的使用都会导致一个空字符串。
+的ARG指令在它被定义的构建阶段结束推移的范围进行。要在多个阶段使用arg，每个阶段都必须包含ARG指令。
+```
+FROM busybox
+ARG SETTINGS
+RUN ./run/setup $SETTINGS
+
+FROM busybox
+ARG SETTINGS
+RUN ./run/other $SETTINGS
+```
+
+**使用ARG变量**
+
+>您可以使用ARG或ENV指令来指定该RUN指令可用的变量。使用ENV指令定义的环境变量 始终会覆盖ARG同名指令。考虑此Dockerfile和ENVand ARG指令。
+```
+1 FROM ubuntu
+2 ARG CONT_IMG_VER
+3 ENV CONT_IMG_VER v1.0.0
+4 RUN echo $CONT_IMG_VER
+
+```
+然后，假定此映像是使用以下命令构建的：
+```
+$ docker build --build-arg CONT_IMG_VER=v2.0.1 .
+
+```
+在这种情况下，该RUN指令将使用v1.0.0而不是ARG用户传递的设置：v2.0.1此行为类似于Shell脚本，其中局部作用域的变量从其定义的角度覆盖作为参数传递或从环境继承的变量。
+
+使用上面的示例，但使用不同的ENV规范，可以在ARG和ENV指令之间创建更有用的交互：
+```
+1 FROM ubuntu
+2 ARG CONT_IMG_VER
+3 ENV CONT_IMG_VER ${CONT_IMG_VER:-v1.0.0}
+4 RUN echo $CONT_IMG_VER
+
+```
+与ARG指令不同，ENV值始终保留在生成的映像中。考虑不带--build-arg标志的Docker构建：
+```
+$ docker build .
+```
+
+使用此Dockerfile示例，CONT_IMG_VER它仍然保留在映像中，但其值将是指令v1.0.0第3行中的默认设置ENV。
+
+在此示例中，变量扩展技术使您可以从命令行传递参数，并利用ENV指令将其保留在最终映像中 。仅有限的一组Dockerfile指令支持变量扩展。
+
+**预定义的ARG**
+
+Docker具有一组预定义ARG变量，您可以在不使用ARGDockerfile中相应指令的情况下使用它们。
+
+- HTTP_PROXY
+- http_proxy
+- HTTPS_PROXY
+- https_proxy
+- FTP_PROXY
+- ftp_proxy
+- NO_PROXY
+- no_proxy
+
+要使用这些，只需使用以下标志在命令行中传递它们：
+```
+--build-arg <varname>=<value>
+```
+
+默认情况下，这些预定义变量从的输出中排除 docker history。排除它们可以降低意外泄露HTTP_PROXY变量中的敏感身份验证信息的风险。
+
+例如，考虑使用以下命令构建以下Dockerfile --build-arg HTTP_PROXY=http://user:pass@proxy.lon.example.com
+
+```
+FROM ubuntu
+RUN echo "Hello World"
+```
+在这种情况下，HTTP_PROXY变量的值在中不可用， docker history也不被缓存。如果要更改位置，并且代理服务器已更改为http://user:pass@proxy.sfo.example.com，则后续的构建不会导致高速缓存未命中。
+
+如果您需要覆盖此行为，则可以通过ARG 在Dockerfile中添加如下语句来做到这一点：
+```
+FROM ubuntu
+ARG HTTP_PROXY
+RUN echo "Hello World"
+```
+构建此Dockerfile时，将HTTP_PROXY保留在中 docker history，并且更改其值会使构建缓存无效。
+
+**对构建缓存的影响**
+
+>ARG变量不会像ENV变量那样持久化到生成的映像中。但是，ARG变量确实以类似方式影响构建缓存。如果Dockerfile定义了一个ARG其值不同于先前构建的变量，则首次使用时会发生“缓存未命中”，而不是其定义。特别是，RUN一条指令之后的所有指令都 隐式地ARG使用该ARG变量（作为环境变量），因此可能导致高速缓存未命中。ARG除非。中有匹配的ARG语句，否则所有预定义变量均免于缓存Dockerfile。
+
+例如，考虑以下两个Dockerfile：
+```
+1 FROM ubuntu
+2 ARG CONT_IMG_VER
+3 RUN echo $CONT_IMG_VER
+```
+```
+1 FROM ubuntu
+2 ARG CONT_IMG_VER
+3 RUN echo hello
+```
+如果--build-arg CONT_IMG_VER=<value>在命令行上指定，则在两种情况下，第2行上的指定都不会导致高速缓存未命中。第3行确实会导致缓存未命中。ARG CONT_IMG_VER导致RUN行被标识为与正在运行的CONT_IMG_VER=<value>echo hello 相同，因此，如果进行了<value> 更改，则会遇到缓存未命中的情况。
+
+考虑同一命令行下的另一个示例：
+```
+1 FROM ubuntu
+2 ARG CONT_IMG_VER
+3 ENV CONT_IMG_VER $CONT_IMG_VER
+4 RUN echo $CONT_IMG_VER
+```
+在此示例中，高速缓存未命中发生在第3行。之所以发生未命中，是因为变量中的变量值ENV引用了该ARG变量，并且该变量是通过命令行更改的。在此示例中，该ENV 命令使图像包含该值。
+
+如果一条ENV指令覆盖ARG了同名的一条指令，例如Dockerfile：
+```
+1 FROM ubuntu
+2 ARG CONT_IMG_VER
+3 ENV CONT_IMG_VER hello
+4 RUN echo $CONT_IMG_VER
+```
+
+第3行不会导致缓存未命中，因为的值CONT_IMG_VER是一个常量（hello）。结果，RUN（第4行）使用的环境变量和值在两次构建之间不会改变。
 
 
 - RUN
@@ -575,6 +710,247 @@ CMD [“ p1_cmd”，“ p2_cmd”]|	p1_cmd p2_cmd|	/ bin / sh -c exec_entry p1_
 CMD exec_cmd p1_cmd|	/ bin / sh -c exec_cmd p1_cmd|	/ bin / sh -c exec_entry p1_entry|	exec_entry p1_entry / bin / sh -c exec_cmd p1_cmd||
 
 >注意：如果CMD是从基础镜像定义的，则设置ENTRYPOINT将重置CMD为空值。在这种情况下，CMD必须在当前镜像中定义一个值。
+
+
+- VOLUME
+
+```
+VOLUME ["/data"]
+```
+>该VOLUME指令创建具有指定名称的安装点，并将其标记为保存来自本地主机或其他容器的外部安装的卷。该值可以是JSON数组，也可以是VOLUME ["/var/log/"]具有多个参数的纯字符串，例如VOLUME /var/log或VOLUME /var/log /var/db。有关通过Docker客户端的更多信息/示例和安装说明，请参阅 通过Volumes共享目录 。
+
+docker run命令使用基础映像内指定位置上存在的任何数据初始化新创建的卷。例如，考虑以下Dockerfile片段：
+```
+FROM ubuntu
+RUN mkdir /myvol
+RUN echo "hello world" > /myvol/greeting
+VOLUME /myvol
+```
+
+该Dockerfile生成一个映像，该映像导致docker run在处创建一个新的挂载点/myvol并将该greeting文件复制 到新创建的卷中。
+
+请注意以下几点Dockerfile
+
+- 基于Windows的容器上的卷：使用基于Windows的容器时，容器内的卷的目的地必须是以下之一：
+    - 不存在或空目录
+    - 除以下驱动器 C:
+- 从Dockerfile中更改卷：如果在声明了卷之后有任何构建步骤更改了卷中的数据，则这些更改将被丢弃。
+- JSON格式：列表被解析为JSON数组。您必须用双引号（"）而不是单引号（'）括住单词。
+- 主机目录是在容器运行时声明的：主机目录（挂载点）从本质上说是依赖于主机的。这是为了保留图像的可移植性，因为不能保证给定的主机目录在所有主机上都可用。因此，您无法从Dockerfile内挂载主机目录。该VOLUME指令不支持指定host-dir 参数。创建或运行容器时，必须指定安装点。
+
+- WORKDIR
+
+```
+WORKDIR /path/to/workdir
+```
+
+该WORKDIR指令集的工作目录对任何RUN，CMD， ENTRYPOINT，COPY和ADD它后面的说明Dockerfile。如果WORKDIR不存在，那么即使以后的任何Dockerfile指令中都没有使用它，也将创建它。
+
+该WORKDIR指令可以在中多次使用Dockerfile。如果提供了相对路径，则它将相对于上一条WORKDIR指令的路径 。例如：
+```
+WORKDIR /a
+WORKDIR b
+WORKDIR c
+RUN pwd
+```
+最终的输出pwd命令这Dockerfile将是 /a/b/c。
+
+该WORKDIR指令可以解析先前使用设置的环境变量 ENV。您只能使用在中显式设置的环境变量Dockerfile。例如：
+```
+ENV DIRPATH /path
+WORKDIR $DIRPATH/$DIRNAME
+RUN pwd
+```
+
+最终pwd命令的输出Dockerfile是 /path/$DIRNAME
+
+- ONBUILD
+
+```
+ONBUILD [INSTRUCTION]
+```
+
+该ONBUILD指令将映像用作另一个构建的基础时，将在以后的时间向该映像添加触发指令。触发器将在下游构建的上下文中执行，就像它已FROM在下游指令之后立即插入一样 Dockerfile。
+
+任何构建指令都可以注册为触发器。
+
+如果要构建的图像将用作构建其他图像的基础，例如应用程序构建环境或可以使用用户特定配置自定义的守护程序，则此功能很有用。
+
+例如，如果您的映像是可重用的Python应用程序构建器，则将需要在特定目录中添加应用程序源代码，并且此后可能需要调用构建脚本 。你不能只是打电话ADD和RUN现在，因为你还没有访问应用程序的源代码，这将是为每个应用程序生成不同的。您可以简单地为应用程序开发人员提供Dockerfile可复制粘贴到其应用程序中的样板，但这效率低下，容易出错且难以更新，因为它与特定于应用程序的代码混合在一起。
+
+解决方案是使用ONBUILD注册预先的指令，以便在下一个构建阶段中稍后运行。
+
+运作方式如下：
+
+- 当遇到ONBUILD指令时，构建器将触发器添加到正在构建的图像的元数据中。该指令不会影响当前版本。
+- 在构建结束时，所有触发器的列表都存储在映像清单的key下OnBuild。可以使用docker inspect命令检查它们。
+- 稍后，可以使用该FROM指令将该图像用作新版本的基础 。作为处理FROM指令的一部分，下游构建器将查找ONBUILD触发器，并以注册时的顺序执行它们。如果任何触发器失败，则该FROM指令将中止，从而导致构建失败。如果所有触发器都成功，则FROM指令将完成，并且构建将照常继续。
+- 执行完触发器后，将从最终图像中清除触发器。换句话说，它们不是“孙子代”版本所继承的。
+
+例如，您可以添加以下内容：
+```
+[...]
+ONBUILD ADD . /app/src
+ONBUILD RUN /usr/local/bin/python-build --dir /app/src
+[...]
+```
+>- 警告：不允许ONBUILD使用链接说明ONBUILD ONBUILD。
+>- 警告：该ONBUILD指令可能不会触发FROM或执行MAINTAINER。
+
+- STOPSIGNAL 
+
+>该STOPSIGNAL指令设置将被发送到容器退出的系统调用信号。该信号可以是与内核syscall表中的位置匹配的有效无符号数字（例如9），也可以是格式为SIGNAME的信号名称（例如SIGKILL）。
+
+
+- HEALTHCHECK 
+
+该HEALTHCHECK指令有两种形式：
+
+- HEALTHCHECK [OPTIONS] CMD command （通过在容器内部运行命令来检查容器的运行状况）
+- HEALTHCHECK NONE （禁用从基本映像继承的任何运行状况检查）
+
+该HEALTHCHECK指令告诉Docker如何测试容器以检查其是否仍在工作。这样可以检测到诸如Web服务器陷入无限循环并且无法处理新连接的情况，即使服务器进程仍在运行。
+
+当指定了运行状况检查的容器时，除了其正常状态外，它还具有运行状况。此状态最初为starting。只要运行状况检查通过，它将变为healthy（以前处于任何状态）。在一定数量的连续失败之后，它变为unhealthy。
+
+之前可能出现的选项CMD是：
+
+- --interval=DURATION（默认值：30s）
+- --timeout=DURATION（默认值：30s）
+- --start-period=DURATION（默认值：0s）
+- --retries=N（默认值：3）
+
+运行状况检查将首先在容器启动后的间隔秒数内运行，然后在之前每次检查完成后的间隔秒数内运行。
+
+如果单次检查花费的时间超过超时秒数，则认为检查失败。
+
+对于要考虑的容器，需要重试连续进行的运行状况检查失败unhealthy。
+
+**开始时间段**为需要时间进行引导的容器提供了初始化时间。在此期间内的探针故障将不计入最大重试次数。但是，如果运行状况检查在启动期间成功，则认为该容器已启动，并且所有连续失败将计入最大重试次数。
+
+HEALTHCHECKDockerfile中只能有一条指令。如果您列出多个，则只有最后一个HEALTHCHECK才会生效。
+
+CMD关键字后面的命令可以是shell命令（例如HEALTHCHECK CMD /bin/check-running）或exec数组（与其他Dockerfile命令一样；ENTRYPOINT有关详细信息，请参见例如）。
+
+该命令的退出状态指示容器的健康状态。可能的值为：
+
+- 0：成功-容器健康且可以使用
+- 1：不健康-容器无法正常工作
+- 2：保留-请勿使用此退出代码
+
+例如，要每五分钟检查一次，以便网络服务器能够在三秒钟内为站点的主页提供服务：
+```
+HEALTHCHECK --interval=5m --timeout=3s \
+CMD curl -f http://localhost/ || exit 1
+```
+
+为了帮助调试失败的探针，命令在stdout或stderr上写入的任何输出文本（UTF-8编码）都将存储在运行状况中，并可以通过查询 docker inspect。此类输出应保持简短（当前仅存储前4096个字节）。
+
+容器的健康状态发生更改时，将health_status生成具有新状态的事件。
+
+该HEALTHCHECK功能已在Docker 1.12中添加。
+
+- SHELL
+
+```
+SHELL ["executable", "parameters"]
+```
+该SHELL指令允许覆盖用于命令的shell形式的默认shell 。在Linux上["/bin/sh", "-c"]，默认的shell是，在Windows 上，默认的shell 是["cmd", "/S", "/C"]。该SHELL指令必须以JSON格式编写在Dockerfile中。
+
+该SHELL指令在Windows上特别有用，在Windows上有两个常用且完全不同的本机shell：cmd和powershell，以及可用的替代shell包括sh。
+
+该SHELL说明可以出现多次。每个SHELL指令将覆盖所有先前的SHELL指令，并影响所有后续的指令。例如：
+
+```
+FROM microsoft/windowsservercore
+
+# Executed as cmd /S /C echo default
+RUN echo default
+
+# Executed as cmd /S /C powershell -command Write-Host default
+RUN powershell -command Write-Host default
+
+# Executed as powershell -command Write-Host hello
+SHELL ["powershell", "-command"]
+RUN Write-Host hello
+
+# Executed as cmd /S /C echo hello
+SHELL ["cmd", "/S", "/C"]
+RUN echo hello
+```
+以下说明可以通过影响SHELL指令时， 壳他们的形式在一个Dockerfile使用：RUN，CMD和ENTRYPOINT。
+
+以下示例是Windows上常见的模式，可通过使用SHELL指令进行精简：
+```
+...
+RUN powershell -command Execute-MyCmdlet -param1 "c:\foo.txt"
+...
+```
+docker调用的命令将是：
+```
+cmd /S /C powershell -command Execute-MyCmdlet -param1 "c:\foo.txt"
+```
+
+这效率低下有两个原因。首先，有一个不必要的cmd.exe命令处理器（又名Shell）被调用。其次，shell 形式的每条RUN指令都需要在命令前加上前缀。powershell -command
+
+为了使其更有效，可以采用两种机制之一。一种是使用RUN命令的JSON形式，例如：
+```
+...
+RUN ["powershell", "-command", "Execute-MyCmdlet", "-param1 \"c:\\foo.txt\""]
+...
+```
+尽管JSON形式是明确的，并且不使用不必要的cmd.exe，但它确实需要通过双引号和转义来实现更多的详细信息。另一种机制是使用SHELL指令和外壳程序形式，使Windows用户的语法更自然，尤其是与escapeparser指令结合使用时：
+```
+# escape=`
+
+FROM microsoft/nanoserver
+SHELL ["powershell","-command"]
+RUN New-Item -ItemType Directory C:\Example
+ADD Execute-MyCmdlet.ps1 c:\example\
+RUN c:\example\Execute-MyCmdlet -sample 'hello world'
+```
+
+导致：
+```
+PS E:\docker\build\shell> docker build -t shell .
+Sending build context to Docker daemon 4.096 kB
+Step 1/5 : FROM microsoft/nanoserver
+ ---> 22738ff49c6d
+Step 2/5 : SHELL powershell -command
+ ---> Running in 6fcdb6855ae2
+ ---> 6331462d4300
+Removing intermediate container 6fcdb6855ae2
+Step 3/5 : RUN New-Item -ItemType Directory C:\Example
+ ---> Running in d0eef8386e97
+
+
+    Directory: C:\
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----       10/28/2016  11:26 AM                Example
+
+
+ ---> 3f2fbf1395d9
+Removing intermediate container d0eef8386e97
+Step 4/5 : ADD Execute-MyCmdlet.ps1 c:\example\
+ ---> a955b2621c31
+Removing intermediate container b825593d39fc
+Step 5/5 : RUN c:\example\Execute-MyCmdlet 'hello world'
+ ---> Running in be6d8e63fe75
+hello world
+ ---> 8e559e9bf424
+Removing intermediate container be6d8e63fe75
+Successfully built 8e559e9bf424
+PS E:\docker\build\shell>
+```
+
+该SHELL指令还可用于修改外壳的操作方式。例如，SHELL cmd /S /C /V:ON|OFF在Windows上使用，可以修改延迟的环境变量扩展语义。
+
+如果SHELL需要备用shell，例如，和其他zsh，该指令也可以在Linux上使用。cshtcsh
+
+该SHELL功能已在Docker 1.12中添加。
 
 
 #### 网络通讯模块
