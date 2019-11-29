@@ -2,6 +2,56 @@
 
 #### docker 安装
 
+#### 简单安装
+
+**centos:**
+
+```
+yum install docker
+```
+
+#### Docker CE 最新版本安装
+
+参考: https://docs.docker.com/install/linux/docker-ce/centos/
+
+**centos:**
+
+
+Uninstall old versions
+Older versions of Docker were called docker or docker-engine. If these are installed, uninstall them, along with associated dependencies.
+```
+sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+```
+
+```
+sudo yum install -y yum-utils \
+  device-mapper-persistent-data \
+  lvm2
+```
+```
+sudo yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+```
+
+```
+sudo yum install docker-ce
+```
+
+设置为开机启动：
+
+```
+systemctl enable docker
+```
+
+
 #### Dockerfile 配置介绍
 
 - FROM
