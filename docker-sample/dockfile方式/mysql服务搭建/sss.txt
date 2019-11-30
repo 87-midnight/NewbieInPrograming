@@ -1,1 +1,5 @@
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'Fsw4#ds.#sw43' WITH GRANT OPTION;
+create database <databaseName>
+create user '<username>'@'%' identified by '<password>';
+flush privileges;
+
+grant all privileges on [<databaseName>|*].* to '<username>'@'%' with grant option;
