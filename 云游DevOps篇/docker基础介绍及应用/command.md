@@ -54,4 +54,20 @@ docker inspect [container_name|container_id]
 >   - ip:hostPort:containerPort[/protocol] （映射指定地址的指定端口）
 >   - ip::containerPort[/protocol] （映射指定地址的任意端口）
 
+#### network 网络
+
+```
+docker network ls
+```
+
+创建自定义网络：
+```
+network create --subnet=172.18.0.0/16 mynetwork
+```
+
+启动时指定network和ip：
+```
+docker run -itd --name networkTest1 --net mynetwork --ip 172.18.0.2 centos:latest /bin/bash
+```
+
 #### docker compose 命令相关
