@@ -54,6 +54,33 @@ CMD ["redis-server","/usr/local/etc/redis/redis.conf"]
 
 ### redis主从模式安装
 
+主机redis.conf配置信息：
+
+```
+daemonize yes
+port 6379
+requirepass 123456
+# 一个客户端空闲多少秒后关闭连接(0代表禁用，永不关闭)
+timeout 0
+# 会在指定秒数和数据变化次数之后把数据库写到磁盘上
+# 900秒（15分钟）之后，且至少1次变更
+# 300秒（5分钟）之后，且至少10次变更
+# 60秒之后，且至少10000次变更
+save 900 1
+save 300 10
+save 60 10000
+```
+
+从机slave redis.conf配置：
+
+```
+daemonize yes
+port 6379
+slaveof xxx.xxx.xxx.xxx:6379
+masterauth 123456
+```
+
+
 
 ### redis集群模式安装
 
