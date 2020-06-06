@@ -72,3 +72,18 @@ gitlab-rails console
 ```
 Notify.test_email('destination_email@address.com', 'Message Subject', 'Message Body').deliver_now
 ```
+
+#### gitlab-runner 安装
+
+`通过docker`
+
+`拉取镜像`
+
+```cmd
+docker pull gitlab/gitlab-runner:latest
+```
+
+>docker run -d --name gitlab-runner --restart always \
+   -v /srv/gitlab-runner/config:/etc/gitlab-runner \
+   -v /var/run/docker.sock:/var/run/docker.sock \
+   gitlab/gitlab-runner:latest

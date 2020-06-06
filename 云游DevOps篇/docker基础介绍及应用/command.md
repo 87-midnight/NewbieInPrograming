@@ -70,4 +70,25 @@ network create --subnet=172.18.0.0/16 mynetwork
 docker run -itd --name networkTest1 --net mynetwork --ip 172.18.0.2 centos:latest /bin/bash
 ```
 
+#### docker 配置国内源
+
+```cmd
+vi /etc/docker/daemon.json
+```
+
+>{
+   "registry-mirrors" : [
+     "http://ovfftd6p.mirror.aliyuncs.com",
+     "http://registry.docker-cn.com",
+     "http://docker.mirrors.ustc.edu.cn",
+     "http://hub-mirror.c.163.com"
+   ],
+   "insecure-registries" : [
+     "registry.docker-cn.com",
+     "docker.mirrors.ustc.edu.cn"
+   ],
+   "debug" : true,
+   "experimental" : true
+ }
+
 #### docker compose 命令相关

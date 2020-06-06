@@ -26,3 +26,40 @@
 #### 安装netstat命令
 
 >yum install net-tools
+
+
+#### centos && vm虚拟机网络配置
+
+##### 静态配置方式
+
+- 网卡选择桥接模式，独立分配ip
+
+- 修改/etc/sysconfig/network-scripts/ifcfg-ens33
+
+- IPADDR为宿主机的ip段，网关子网与宿主机一样。
+```
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=ens33
+UUID=cfa52298-c719-46fd-8512-dc944ac26567
+DEVICE=ens33
+ONBOOT=yes
+IPADDR=192.168.31.131
+GATEWAY=192.168.31.1
+NETMASK=255.255.255.0
+DNS1=8.8.8.8
+DNS2=114.114.114.114
+IPV6_PEERDNS=yes
+IPV6_PEERROUTES=yes
+IPV6_PRIVACY=no
+
+```
