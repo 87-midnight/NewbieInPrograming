@@ -87,3 +87,26 @@ docker pull gitlab/gitlab-runner:latest
    -v /srv/gitlab-runner/config:/etc/gitlab-runner \
    -v /var/run/docker.sock:/var/run/docker.sock \
    gitlab/gitlab-runner:latest
+
+
+#### gitlab-runner 注册gitlab和k8s
+
+`在kube里面创建serviceAccount,获取名称和token`
+
+`使用kubectl 创建该serviceAccount的ca证书`
+
+`进入gitlab-runner容器，执行以下命令`
+
+```
+gitlab-runner register \
+  --non-interactive \
+  --url "http://gitlab-host" \
+  --registration-token "token" \
+  --executor "kubernetes" \
+  --description "kubernetes-runner" \
+  --tag-list "kubernetes-runner" \
+  --kubernetes-host "https://host:6443" \
+  --kubernetes-ca-file "/ca.crt" \
+  --kubernetes-bearer_token ""
+```
+
