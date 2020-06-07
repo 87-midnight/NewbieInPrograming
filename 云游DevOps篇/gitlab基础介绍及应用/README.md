@@ -91,9 +91,61 @@ docker pull gitlab/gitlab-runner:latest
 
 #### gitlab-runner 注册gitlab和k8s
 
-`在kube里面创建serviceAccount,获取名称和token`
+```cmd
+kubectl cluster-info | grep 'Kubernetes master' | awk '/http/ {print $NF}'
 
-`使用kubectl 创建该serviceAccount的ca证书`
+#获取kubernetes api地址
+```
+
+`gitlab-admin-service-account.yaml配置内容，用于创建用户`
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gitlab-admin
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: gitlab-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: gitlab-admin
+  namespace: kube-system
+
+```
+
+`在kube里面创建serviceAccount,获取名称和token`
+```cmd
+kubectl apply -f gitlab-admin-service-account.yaml
+
+#结果
+serviceaccount/gitlab-admin created
+clusterrolebinding.rbac.authorization.k8s.io/gitlab-admin created
+
+
+`获取默认秘钥的名称`
+```cmd
+kubectl get secret
+```
+
+`通过上述的命令，拿到Name的值，放到下面的secret后面，使用kubectl 创建ca证书`
+
+```cmd
+kubectl get secret default-token-ss8gj -o jsonpath="{['data']['ca\.crt']}" | base64 --decode
+```
+
+`获取service token`
+
+```cmd
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep gitlab-admin | awk '{print $1}')
+```
 
 `进入gitlab-runner容器，执行以下命令`
 
@@ -110,3 +162,4 @@ gitlab-runner register \
   --kubernetes-bearer_token ""
 ```
 
+注册成功后，保存，在高级选项那里选择administrator
