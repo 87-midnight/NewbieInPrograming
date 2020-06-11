@@ -33,3 +33,12 @@
 ```cmd
 yum -y install lrzsz 
 ```
+
+#### 解压、压缩文件
+
+- tar.gz
+
+```cmd
+# 解压
+tar -zxvf xxx.tar.gz
+```
