@@ -4,20 +4,7 @@
 >- SkyWalking 是观察性分析平台和应用性能管理系统。
 提供分布式追踪、服务网格遥测分析、度量聚合和可视化一体化解决方案.
 
-### skywalking 安装
 
-**下载：** [源文件或执行文件下载](http://skywalking.apache.org/downloads/)
-
-**文件目录介绍**
-
-- agent
-- bin
-- config
-- license
-- logs
-- oap-libs
-- trace-buffer
-- webapp
 
 
 **存储方案的支持性**
