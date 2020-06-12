@@ -28,3 +28,17 @@
 >yum install net-tools
 
 
+#### 安装lrzsz 接收、下载文件
+
+```cmd
+yum -y install lrzsz 
+```
+
+#### 解压、压缩文件
+
+- tar.gz
+
+```cmd
+# 解压
+tar -zxvf xxx.tar.gz
+```
