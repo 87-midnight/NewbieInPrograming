@@ -41,3 +41,30 @@ docker run  -d \
   --name prometheus \
   prom/prometheus
 ```
+
+### prometheus-mysql 监控
+
+```cmd
+docker pull prom/mysqld-exporter
+
+docker run -d \
+  -p 9104:9104 \
+  --user root \
+  -e DATA_SOURCE_NAME="user:password@(hostname:3306)/" \
+  prom/mysqld-exporter
+```
+
+- 启动后，查看http://host:9090/targets
+
+检查是否启动正常
+
+![](./static/prometheus-mysql-status.png)
+
+
+- grafana首页，导入模板
+
+![](./static/prometheus-mysql-import.png)
+
+- mysql首页监控鸟瞰图
+
+![](./static/prometheus-mysql-overview.png)

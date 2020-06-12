@@ -40,3 +40,13 @@ docker run -d \
 效果如图所示：
 
 ![监控首页](./static/prometheus-home.png)
+
+### grafana 官网dashboard搜索
+
+地址：https://grafana.com/grafana/dashboards?orderBy=name&direction=asc
+
+>- 查找适合的prometheus dashboard，获取其id，然后在import界面导入
+>- 比如需要监控mysql服务
+>- 首先安装prometheus/mysql-exporter镜像，配置好连接信息
+>- 重启prometheus服务
+>- 最后再使用合适的mysql-dashboard来导入
