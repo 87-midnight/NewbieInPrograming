@@ -10,6 +10,7 @@ docker pull prom/node-exporter
 
 ```cmd
 docker run -d -p 9100:9100 \
+ --user root \
   -v "/proc:/host/proc:ro" \
   -v "/sys:/host/sys:ro" \
   -v "/:/rootfs:ro" \

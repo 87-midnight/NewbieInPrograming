@@ -17,6 +17,7 @@ chmod 777 /usr/local/grafana-storage
 
 ```cmd
 docker run -d \
+  --user root \
   -p 3000:3000 \
   --name=grafana \
   -v /usr/local/grafana-storage:/var/lib/grafana \

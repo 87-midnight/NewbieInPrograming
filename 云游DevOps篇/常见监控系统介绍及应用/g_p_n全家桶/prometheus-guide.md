@@ -33,6 +33,7 @@ scrape_configs:
 
 ```cmd
 docker run  -d \
+  --user root \
   -p 9090:9090 \
   -v /usr/local/etc/prometheus.yml:/etc/prometheus/prometheus.yml  \
   --restart=always \
