@@ -150,10 +150,28 @@ yum install --enablerepo=elasticsearch elasticsearch
 docker pull docker.elastic.co/elasticsearch/elasticsearch:7.7.1
 ```
 
+- 更改系统配置
+
+```cmd
+vim /etc/sysctl.conf
+
+# 更改以下属性
+vm.max_map_count=655350
+
+#保存并执行
+sysctl -p
+```
+```cmd
+mkdir -p /usr/elastic/data
+chmod 777 -R /usr/elastic/data
+
+```
+
 #### 启动单个节点的elastic服务
 
 ```cmd
-docker run -itd --name elastic-single-node -p 9200:9200 -p 9300:9300 \
+
+docker run -itd --name elasticsearch -p 9200:9200 -p 9300:9300 \
 -v /usr/elastic/data:/usr/share/elasticsearch/data \
 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.7.1
 ```
