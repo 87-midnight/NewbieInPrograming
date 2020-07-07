@@ -7,3 +7,7 @@
 `基于多个远程仓库下，提交时，使用命令`
 
 > git push &lt;name&gt; &lt;branch&gt;
+
+#### git忽略脚本文件权限覆盖
+
+> git config core.filemode false
