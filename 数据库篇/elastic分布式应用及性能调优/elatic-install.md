@@ -172,6 +172,7 @@ chmod 777 -R /usr/elastic/data
 ```cmd
 
 docker run -itd --name elasticsearch -p 9200:9200 -p 9300:9300 \
+--restart=always \
 -v /usr/elastic/data:/usr/share/elasticsearch/data \
 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.7.1
 ```
