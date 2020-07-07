@@ -42,3 +42,13 @@ yum -y install lrzsz
 # 解压
 tar -zxvf xxx.tar.gz
 ```
+
+#### 防火墙设置
+
+添加放行端口
+
+```
+firewall-cmd --zone=public --add-port=80/tcp --permanent 
+
+firewall-cmd --reload
+```
