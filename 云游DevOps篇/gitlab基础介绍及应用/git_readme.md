@@ -11,3 +11,10 @@
 #### git忽略脚本文件权限覆盖
 
 > git config core.filemode false
+
+
+#### 生成ssh key 
+
+```cmd
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```

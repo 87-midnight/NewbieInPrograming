@@ -52,3 +52,10 @@ firewall-cmd --zone=public --add-port=80/tcp --permanent
 
 firewall-cmd --reload
 ```
+#### 安装open-jdk
+
+```
+yum list java*
+
+yum install java-1.8.0-openjdk.x86_64
+```
