@@ -1,0 +1,22 @@
+server:
+  port: 8087
+spring:
+  application:
+    name: file-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+dubbo:
+  registry:
+    address: nacos://localhost
+    port: 8848
+    timeout: 2000
+  protocol:
+    name: dubbo
+    port: 22185
+  consumer:
+    check: false
+feign:
+  hystrix:
+    enabled: true
