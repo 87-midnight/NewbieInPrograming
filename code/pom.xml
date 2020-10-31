@@ -24,6 +24,14 @@
         <module>redis-sample</module>
         <module>jdbc-sample</module>
         <module>spring-boot-mq-sample</module>
+        <module>spring-cloud-sample</module>
+        <module>spring-cloud-sample/spring-cloud-nacos-dubbo-sample</module>
+        <module>spring-cloud-sample/spring-cloud-nacos-sample</module>
+        <module>spring-cloud-sample/spring-cloud-stream-sample</module>
+        <module>spring-cloud-sample/spring-cloud-nacos-dubbo-sample/dubbo-traditional-common</module>
+        <module>spring-cloud-sample/spring-cloud-nacos-dubbo-sample/system-service</module>
+        <module>spring-cloud-sample/spring-cloud-nacos-dubbo-sample/file-service</module>
+        <module>spring-boot-dubbo-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
