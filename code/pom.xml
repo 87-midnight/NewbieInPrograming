@@ -32,6 +32,7 @@
         <module>spring-cloud-sample/spring-cloud-nacos-dubbo-sample/system-service</module>
         <module>spring-cloud-sample/spring-cloud-nacos-dubbo-sample/file-service</module>
         <module>spring-boot-dubbo-sample</module>
+        <module>netty-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
