@@ -1,0 +1,57 @@
+spring:
+  profiles: student
+  application:
+    name: student-application
+  rabbitmq:
+    password: guest
+    username: guest
+    addresses: 127.0.0.1:5672
+  cloud:
+    stream:
+      rabbit: #rabbit binder，基础框架已实现，可以通过spring.cloud.stream.binders来定义一个新的binder
+        binder:
+          admin-addresses: 127.0.0.1:5672
+        bindings:
+          classroom-input:
+            consumer:
+              exchange-type: fanout
+          classroom-input1:
+            consumer:
+              exchange-type: fanout
+      bindings:
+        classroom-input:
+          destination: classroom-topic
+          content-type: application/json
+          group: classroom-group
+        classroom-input1:
+          destination: classroom-topic
+          content-type: application/json
+          group: classroom-group1
+        chitchat-input:
+          destination: chitchat-topic
+          content-type: application/json
+          group: student-chitchat-group
+        chitchat-output:
+          destination: chitchat-topic
+          content-type: application/json
+
+
+---
+
+spring:
+  profiles: teacher
+  application:
+    name: teacher-application
+  rabbitmq:
+    password: guest
+    username: guest
+    addresses: 127.0.0.1:5672
+  cloud:
+    stream:
+      rabbit:
+        binder:
+          admin-addresses: 127.0.0.1:5672
+        bindings:
+          classroom-output:
+            producer:
+              exchange-type: fanout
