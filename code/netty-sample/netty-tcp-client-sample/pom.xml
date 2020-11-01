@@ -9,7 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>netty-tcp-server-sample</artifactId>
-
+    <artifactId>netty-tcp-client-sample</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.lcg</groupId>
+            <artifactId>netty-common-library</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
 
 </project>
