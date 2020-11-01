@@ -1,0 +1,5 @@
+server:
+  port: 8823
+spring:
+  application:
+    name: service-two
