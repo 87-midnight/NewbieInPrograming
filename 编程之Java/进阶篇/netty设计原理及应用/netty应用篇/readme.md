@@ -116,3 +116,117 @@ public class BasicStringHandler extends SimpleChannelInboundHandler<byte[]> {
     }
 }
 ```
+
+
+### netty udp 基础篇
+
+- udp 服务端
+
+核心代码
+
+```java
+public void start() throws InterruptedException {
+        group = new NioEventLoopGroup();
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.group(group)
+                .channel(NioDatagramChannel.class)
+                .option(ChannelOption.SO_RCVBUF, 1024*64)
+                .option(ChannelOption.SO_SNDBUF, 1024*64)
+                .handler(new ChannelInitializer<NioDatagramChannel>(){
+
+                    @Override
+                    protected void initChannel(NioDatagramChannel ch) throws Exception {
+                        ch.pipeline().addLast(new UdpBasicServerHandler());
+                    }
+                });
+        this.parent = bootstrap.bind(new InetSocketAddress(this.port)).sync().channel();
+        if (this.parent.isActive()){
+            log.info("udp服务端启动成功");
+        }
+    }
+```
+
+广播消息，处理客户端消息
+
+```java
+public static final Map<String,InetSocketAddress> clients_udp = new ConcurrentHashMap<>();
+
+public void sendMessage(){
+        String msg = "你好，客户端。";
+        clients_udp.forEach((k,v)->{
+            ByteBuf byteBuf = Unpooled.wrappedBuffer(msg.getBytes());
+            DatagramPacket packet = new DatagramPacket(byteBuf, v);
+            parent.writeAndFlush(packet);
+        });
+    }
+```
+
+```java
+
+@ChannelHandler.Sharable
+@Slf4j
+public class UdpBasicServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket msg) throws Exception {
+        ByteBuf buf = msg.content();
+        int len = buf.readableBytes();
+        byte[] data = new byte[len];
+        buf.readBytes(data);
+        String receive = new String(data,"UTF-8");
+        clients_udp.put(msg.sender().toString(),  msg.sender());
+        log.info("收到客户端的消息：【{}】",receive);
+        log.info("clients:{}",clients_udp);
+    }
+
+}
+
+```
+
+- udp 客户端
+
+```java
+public void start() throws InterruptedException {
+        group = new NioEventLoopGroup();
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.group(group)
+                .channel(NioDatagramChannel.class)
+                .option(ChannelOption.SO_RCVBUF, 1024*64)
+                .option(ChannelOption.SO_SNDBUF, 1024*64)
+                .handler(new ChannelInitializer<NioDatagramChannel>(){
+
+                    @Override
+                    protected void initChannel(NioDatagramChannel ch) throws Exception {
+                        ch.pipeline().addLast(new UdpBasicClientHandler());
+                    }
+                });
+        this.parent = bootstrap.connect(new InetSocketAddress("localhost",this.port)).sync().channel();
+    }
+
+    public void sendMessage(){
+        String msg = "你好，服务端。";
+        ByteBuf byteBuf = Unpooled.wrappedBuffer(msg.getBytes());
+        DatagramPacket packet = new DatagramPacket(byteBuf, (InetSocketAddress) parent.remoteAddress());
+        parent.writeAndFlush(packet);
+
+    }
+
+
+```
+
+处理消息
+```java
+@ChannelHandler.Sharable
+@Slf4j
+public class UdpBasicClientHandler extends SimpleChannelInboundHandler<DatagramPacket> {
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket msg) throws Exception {
+        ByteBuf buf = msg.content();
+        int len = buf.readableBytes();
+        byte[] data = new byte[len];
+        buf.readBytes(data);
+        String receive = new String(data,"UTF-8");
+        log.info("收到服务端的消息：【{}】",receive);
+    }
+}
+```
