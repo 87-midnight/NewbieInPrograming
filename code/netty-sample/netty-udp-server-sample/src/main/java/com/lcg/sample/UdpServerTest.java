@@ -1,6 +1,7 @@
 package com.lcg.sample;
 
 import com.lcg.sample.basic.UdpBasicServer;
+import com.lcg.sample.epoll.UdpEpollServer;
 
 /**
  * @author linchuangang
@@ -8,7 +9,24 @@ import com.lcg.sample.basic.UdpBasicServer;
  **/
 public class UdpServerTest {
     public static void main(String[] args) throws Exception{
-        basic();
+//        basic();
+        epoll();
+    }
+
+    private static void epoll()throws Exception{
+        UdpEpollServer basicServer = new UdpEpollServer(8754);
+        basicServer.start();
+        new Thread(()->{
+            while (true){
+                try {
+                    basicServer.sendMessage();
+                    Thread.sleep(3000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }).start();
     }
 
     private static void basic()throws Exception{
