@@ -35,6 +35,7 @@
         <module>netty-sample</module>
         <module>threadlocal-sample</module>
         <module>spring-boot-redis-sample</module>
+        <module>spring-boot-shiro-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>

@@ -1,0 +1,11 @@
+server:
+  port: 8879
+spring:
+  redis:
+#    password: 123456
+    host: 127.0.0.1
+    port: 6379
+    timeout: 2000
+logging:
+  level:
+    root: debug
