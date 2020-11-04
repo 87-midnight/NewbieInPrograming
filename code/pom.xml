@@ -34,6 +34,7 @@
         <module>spring-boot-dubbo-sample</module>
         <module>netty-sample</module>
         <module>threadlocal-sample</module>
+        <module>spring-boot-redis-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
