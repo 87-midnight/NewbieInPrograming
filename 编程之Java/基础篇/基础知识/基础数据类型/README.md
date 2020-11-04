@@ -4,7 +4,7 @@
 
 ##### 基础数据类型
 
-七个基础数据类型：byte,short,int,float,double,char,boolean
+八种基础数据类型：byte,short,int,float,double,long,char,boolean
 
 在java中，基本数据类型的字节数，最大值和最小值一览表。
 
