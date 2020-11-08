@@ -39,3 +39,8 @@ TYPE [key]
 ```cmd
 GET [key]
 ```
+
+### 常见的redis客户端命令
+
+![](img/redis-command-1.png)
+![](img/redis-command-2.png)
