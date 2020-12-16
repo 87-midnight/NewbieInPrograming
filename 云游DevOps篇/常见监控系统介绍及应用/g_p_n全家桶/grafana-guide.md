@@ -27,6 +27,11 @@ docker run -d \
   grafana/grafana
 ```
 
+- 访问主页
+
+> - http://ip:port
+> - 默认登录用户密码都是admin
+
 - 下载汉化的prometheus，导入
 
 `https://grafana.com/grafana/dashboards/8919/revisions`
