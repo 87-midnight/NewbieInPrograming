@@ -41,6 +41,7 @@
         <module>basic-collection-sample</module>
         <module>dynamic-proxy-sample</module>
         <module>vertx-sample</module>
+        <module>observer-sample</module>
     </modules>
     <groupId>com.lcg</groupId>
     <artifactId>java-basical-sample</artifactId>
