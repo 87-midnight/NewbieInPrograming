@@ -38,7 +38,7 @@
         <module>spring-boot-shiro-sample</module>
         <module>spring-boot-sharding-sphere-sample</module>
         <module>internal-nio-sample</module>
-        <module>basic-collection-sample</module>
+        <module>basic-utils-sample</module>
         <module>dynamic-proxy-sample</module>
         <module>vertx-sample</module>
         <module>observer-sample</module>
