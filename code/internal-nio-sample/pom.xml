@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>basic-utils-sample</artifactId>
+    <artifactId>internal-nio-sample</artifactId>
 
 
 </project>
