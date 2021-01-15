@@ -108,3 +108,10 @@ spring-boot默认的访问路径包含：
 ```
 
 只能访问index目录下的a.txt文件，`http://localhost:8080/static/a.txt`
+
+
+静态资源URL转义问题：
+
+测试spring boot静态资源Tomcat代理后的访问路径是否会被转义，看看配置是否生效
+    https://blog.csdn.net/chenzz2560/article/details/105357001
+    https://blog.csdn.net/ColdFireMan/article/details/86552242
