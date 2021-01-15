@@ -78,3 +78,33 @@ public class ResourceController {
     }
 }
 ```
+
+#### 静态资源访问
+
+spring-boot配置
+
+```yaml
+# 配置静态资源访问前缀
+spring.mvc.static-path-pattern: /static/**
+  # 配置静态资源路径，默认配置失效
+spring.resources.static-locations:
+    - classpath:/index
+```
+
+spring-boot默认的访问路径包含：
+
+    "classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/
+    
+
+假设src/main/resources目录下有以下的目录结构
+```
+- src
+-  main
+-   resources
+-    index
+-     a.txt
+-    sheet
+-     b.js
+```
+
+只能访问index目录下的a.txt文件，`http://localhost:8080/static/a.txt`
