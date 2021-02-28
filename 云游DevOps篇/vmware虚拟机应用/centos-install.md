@@ -65,3 +65,39 @@ IPV6_PEERROUTES=yes
 IPV6_PRIVACY=no
 
 ```
+
+#### 一键初始化ip及ssh及yum
+
+```shell script
+cat >/etc/sysconfig/network-scripts/ifcfg-ens33<<EOF
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=ens33
+UUID=cfa52298-c719-46fd-8512-dc944ac26567
+DEVICE=ens33
+ONBOOT=yes
+IPADDR=192.168.31.134
+GATEWAY=192.168.31.1
+NETMASK=255.255.255.0
+DNS1=8.8.8.8
+DNS2=114.114.114.114
+IPV6_PEERDNS=yes
+IPV6_PEERROUTES=yes
+IPV6_PRIVACY=no
+EOF
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+yum clean all && yum makecache
+yum install -y git net-tools lrzsz
+
+systemctl restart network
+```
